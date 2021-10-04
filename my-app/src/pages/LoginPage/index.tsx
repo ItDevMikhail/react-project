@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Input, InputLabel, FormGroup, Card, CardHeader } from '@material-ui/core';
+import { useHttp } from '../../hooks/http.hook';
+import { useHistory } from "react-router-dom";
 
 export default function LoginPage() {
     type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
@@ -14,6 +16,9 @@ export default function LoginPage() {
     const [passwordWrong, setPasswordWrong] = useState<boolean>(false);
     const [passwordError, setPasswordError] = useState<string>('введите пароль');
     const [formValid, setFormValid] = useState<boolean>(false);
+
+    const { loading, error, request } = useHttp();
+    let history = useHistory();
 
     useEffect(() => {
         if (loginError || passwordError) {
@@ -31,7 +36,7 @@ export default function LoginPage() {
             setLoginError('')
         }
     }
-    const passwordHangler = (e: changeTarget) => {
+    const passwordHandler = (e: changeTarget) => {
         setPassword(e.target.value);
         if (!e.target.value) {
             setPasswordError('введите пароль')
@@ -49,6 +54,19 @@ export default function LoginPage() {
                 break;
             default:
                 break;
+        }
+    }
+
+    const authHandler = async () => {
+        try {
+            const body = JSON.stringify({ login: login, password: password });
+            const data = await request('/api/users/login', 'POST', body);
+            console.log('data', data);
+            if (data) {
+                history.push("/library");
+            }
+        } catch (e) {
+            console.log(error)
         }
     }
 
@@ -75,13 +93,13 @@ export default function LoginPage() {
                         onFocus={e => focusHandler(e)}
                         placeholder="Введите пароль"
                         name="password"
-                        onChange={e => passwordHangler(e)}
+                        onChange={e => passwordHandler(e)}
                         value={password}
                         required />
                     {(passwordWrong && passwordError) && <div className="regErrors">{passwordError}</div>}
                 </FormGroup>
                 <br />
-                <Button color="primary" variant="contained" type='submit' disabled={!formValid}>Войти</Button>
+                <Button color="primary" variant="contained" type='submit' disabled={!formValid || loading} onClick={authHandler}>Войти</Button>
                 <br />
             </form>
         </Card>

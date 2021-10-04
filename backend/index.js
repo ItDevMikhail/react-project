@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from 'mongoose';
 import userRouter from "./routes/usersRouter.js";
+import booksRouter from "./routes/booksRouter.js";
 import cookieParser from "cookie-parser";
 
 
@@ -14,7 +15,7 @@ const mongoUrl = 'mongodb+srv://user:user@cluster0.1cstu.mongodb.net/myFirstData
 
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:4200",
+    origin: "http://localhost:3000",
     credentials: true,
 }));
 app.use(express.json());
@@ -28,6 +29,7 @@ app.use(express.static('backend/static'));
 //     next();
 // });
 
+app.use('/api/library', booksRouter);
 app.use('/api/users', userRouter);
 
 

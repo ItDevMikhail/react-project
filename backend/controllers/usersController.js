@@ -52,7 +52,8 @@ class UsersController {
     }
     async addUser(req, res) {
         try {
-            const user = req.body;
+            let user = req.body;
+            user.login = user.login.toLowerCase();
             console.log(user);
             user.password = Hashing(user.password);
             await Users.create(user);
@@ -64,6 +65,7 @@ class UsersController {
     async login(req, res) {
         try {
             const user = req.body;
+            user.login = user.login.toLowerCase();
             const checkUser = await Users.findOne({ login: user.login });
             if (checkUser) {
                 user.password = Hashing(user.password);
@@ -74,7 +76,7 @@ class UsersController {
                     const accessExpires = privateData.jwt.tokens.access.expiresIn;
                     const refreshExpires = privateData.jwt.tokens.refresh.expiresIn;
                     res.cookie('refreshToken', refreshToken.token, { maxAge: refreshExpires * 1000, httpOnly: true });
-                    res.cookie('accessToken', accessToken, { maxAge: accessExpires * 1000, httpOnly: true })
+                    res.cookie('accessToken', accessToken, { maxAge: accessExpires * 1000, httpOnly: true });
                     res.json({ message: 'вы успешно авторизовались' });
                 } else {
                     res.status(401).json({ message: 'Неверный пароль' });

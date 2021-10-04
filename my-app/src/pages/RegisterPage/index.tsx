@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Input, InputLabel, FormGroup, Card, CardHeader } from '@material-ui/core';
+import { useHttp } from '../../hooks/http.hook';
+import { useHistory } from "react-router-dom";
 
 export default function RegisterPage() {
     type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
     type focusTarget = React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>;
+
+    const {loading, error, request} = useHttp();
 
     const [login, setLogin] = useState<string>('');
     const [name, setName] = useState<string>('');
@@ -26,6 +30,8 @@ export default function RegisterPage() {
     const [passwordError, setPasswordError] = useState<string>('введите пароль');
     const [confPasswordError, setConfPasswordError] = useState<string>('подтвердите пароль');
     const [formValid, setFormValid] = useState<boolean>(false);
+
+    let history = useHistory();
 
     useEffect(() => {
         if (loginError || nameError || lastNameError || emailError || passwordError || confPasswordError) {
@@ -126,17 +132,30 @@ export default function RegisterPage() {
                 break;
         }
     }
+
+    const registerHandler = async () =>{
+        try {
+            const body = JSON.stringify({login: login, name: name, lastName: lastName, email: email, password: password});
+            const data = await request('/api/users/reg', 'POST', body);
+            console.log('data', data);
+            if(data){
+                history.push("/login");
+            }
+        } catch (e) {
+            console.log(error)
+        }
+    }
+
     return (
         <Card className="registerCard">
             <CardHeader title="Регистрация" className="registerCardHeader"></CardHeader>
             <form className="registerForm">
-
                 <FormGroup>
                     <InputLabel htmlFor="login">Логин*</InputLabel>
                     <Input id="login"
                         onFocus={e => focusHandler(e)}
                         type="text"
-                        name="login"
+                        name='login'
                         placeholder="Введите логин"
                         onChange={e => loginHandler(e)}
                         value={login}
@@ -204,7 +223,7 @@ export default function RegisterPage() {
                     {(confPasswordWrong && confPasswordError) && <div className="regErrors">{confPasswordError}</div>}
                 </FormGroup>
                 <br />
-                <Button color="primary" variant="contained" type='submit' disabled={!formValid}>Отправить</Button>
+                <Button color="primary" variant="contained" type='submit' disabled={!formValid || loading} onClick={registerHandler}>Отправить</Button>
                 <br />
             </form>
         </Card>

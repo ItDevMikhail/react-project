@@ -12,11 +12,11 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-h2{
+h2 {
   text-align: center;
 }
 .registerForm,
-.loginForm{
+.loginForm {
   display: flex;
   flex-direction: column;
   max-width: 300px;
@@ -24,73 +24,74 @@ h2{
   margin: 0 auto;
 }
 .registerForm input,
-.loginForm input{
+.loginForm input,
+.createBookArea {
   width: 280px;
 }
-.regErrors{
+.regErrors {
   color: red;
 }
-.inputErrors{
+.inputErrors {
   border-bottom: 1px solid red;
 }
 .registerCard,
-.loginCard{
+.loginCard {
   max-width: 320px;
   margin: 100px auto;
 }
 svg.MuiSvgIcon-root {
- width: auto;
- height: 36px;
- border-radius: 5px;
- fill: #000;
- background-color:#e0e0e0;
+  width: auto;
+  height: 36px;
+  border-radius: 5px;
+  fill: #000;
+  background-color: #e0e0e0;
 }
-svg.MuiSvgIcon-root:hover{
+svg.MuiSvgIcon-root:hover {
   fill: #e0e0e0;
-  background-color:#000;
+  background-color: #000;
 }
-#iconButton.MuiButton-root{
+#iconButton.MuiButton-root {
   min-width: 0;
   line-height: 0;
 }
 .registerCardHeader,
-.loginCardHeader{
+.loginCardHeader {
   text-align: center;
 }
-.header{
- display: flex;
- justify-content: space-between;
- align-items: center;
- background-color: #3f51b5;
- height: 100px;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3f51b5;
+  height: 100px;
 }
-.header a{
+.header a {
   text-decoration: none;
   color: #000;
 }
-.navMenuRight svg{
+.navMenuRight svg {
   height: 36px;
   width: 50px;
   fill: #000;
   border-radius: 5px;
   background-color: #e0e0e0;
 }
-.navMenuRight svg:hover{
+.navMenuRight svg:hover {
   fill: #e0e0e0;
   background-color: #000;
 }
-#iconButton{
+#iconButton {
   padding: 0;
   background-color: transparent;
 }
-.selected #iconButton svg{
+.selected #iconButton svg {
   fill: #e0e0e0;
   background-color: #000;
 }
-.navMenuLeft .selected button{
+.navMenuLeft .selected button {
   background-color: #000;
   color: #fff;
 }
-.navMenuLeft a + a{
+.navMenuLeft a + a {
   margin-left: 20px;
 }
