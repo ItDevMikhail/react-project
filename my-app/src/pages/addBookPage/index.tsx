@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { IBookListProps } from '../../models/iBooks';
+import React, { useState, useEffect } from 'react';
+import { IAddBookProps } from '../../models/iAddbook';
 import { Button, Input, InputLabel, FormGroup, Card, CardHeader, TextField } from '@material-ui/core';
+import { useHistory } from "react-router-dom";
 
 export default function AddBookPage() {
     type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
-    const [book, setBooks] = useState<IBookListProps>({ name: '', description: '' });
+    const [book, setBooks] = useState<IAddBookProps>({ name: '', description: '' });
     const [nameError, setNameError] = useState<boolean>(true);
     const [descrError, setDescrError] = useState<boolean>(true);
-    // const { request, error } = useHttp();
     const [formValid, setFormValid] = useState<boolean>(false);
+    let history = useHistory();
 
     useEffect(() => {
         if (nameError || descrError) {
@@ -30,8 +30,7 @@ export default function AddBookPage() {
     }
     const descriptionHandler = (e: changeTarget) => {
         setBooks({ name: book.name, description: e.target.value });
-        console.log(book)
-        if (e.target.value.length < 15) {
+        if (e.target.value.length < 5) {
             setDescrError(true);
         } else {
             setDescrError(false);
@@ -42,15 +41,17 @@ export default function AddBookPage() {
             const response = await fetch('/api/library/add', {
                 method: 'POST',
                 body: JSON.stringify(book),
-                headers:{
+                headers: {
                     'Content-type': 'application/json'
                 }
             })
             const data = await response.json();
-            if(!response.ok){
-               throw new Error(data.message || 'чёт не то'); 
+            if (!response.ok) {
+                throw new Error(data.message || 'чёт не то');
             }
-            console.log(data)
+            if (data) {
+                history.push(`/library/detail/${data._id}`);
+            }
         } catch (e: any) {
             console.log(e.message);
         }

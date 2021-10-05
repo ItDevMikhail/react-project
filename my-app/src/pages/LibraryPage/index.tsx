@@ -1,50 +1,85 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { useHttp } from '../../hooks/http.hook';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { IBookListProps } from '../../models/iBooks';
+import { CircularProgress } from '@material-ui/core';
+import { useHttp } from '../../hooks/http.hook';
 
 export default function LibraryPage() {
-    const [todos, setTodos] = useState<IBookListProps[]>([{ name: 'Библиотека книг пуста', description: '' }]);
-    const { request, error } = useHttp();
+    const [todos, setTodos] = useState<IBookListProps[]>([{ _id: Date.now().toString(), name: 'Библиотека книг пуста', description: '' }]);
+    const { error, request } = useHttp();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [favorite, setFavorite] = useState(['']);
 
-    useEffect(() => {
-        authHandler();
-        const books = async () => {
-            try {
-                const response = await fetch('/api/library', {
-                    method: 'GET'
-                })
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.message || 'чёт не то');
-                }
-                console.log(data);
-                setTodos(data);
-                return data;
-            } catch (e: any) {
-                console.log(e.message);
-            }
-        }
-        books();
-    }, [])
-    const authHandler = async () => {
-        console.log(todos);
+    const getBooks = async () => {
+        setLoading(true);
         try {
-            const auth = await request('/api/users/auth', 'GET');
-            console.log('data', auth);
-        } catch (e) {
-            console.log(error)
+            const data = await request('/api/library', 'GET');
+            setLoading(false);
+            if (data) setTodos(data);
+            return data;
+        } catch (e: any) {
+            setLoading(false);
+            console.log(error);
+        }
+    }
+    const getFavorite = async () => {
+        try {
+            const data = await request('/api/library/favorite', 'GET');
+            if (data) setFavorite(data);
+            return data;
+        } catch (e: any) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        getBooks();
+        getFavorite()
+        return () => { setTodos(todos); setFavorite(favorite)};
+    }, [])
+    const addFavorite = async (bookId: string) => {
+        try {
+            const response = await fetch(`/api/library/addFavorite/${bookId}`, {
+                method: 'GET',
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'чёт не то');
+            }
+            if (data){
+                setFavorite(data);
+            }
+        } catch (e: any) {
+            setFavorite(['']);
+            console.log(e.message);
+        }
+    }
+    const Favorite = (itemId: string) => {
+        if (favorite.length) {
+            let favor = favorite.filter((data: any) => data.bookId == itemId)
+            if (favor.length > 0) {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
         }
     }
 
     return (
         <>
-            <h2>Library page</h2>
-            <ul> {todos.map((item: any) =>
-                <li key={item._id}>
-                    <h3>{item.name}</h3>
-                    <p>{item.description}</p>
-                </li>)}</ul>
+            <div className="container libraryPage">
+                <h2>Library page</h2>
+                <div className={loading ? 'progressBar active' : 'progressBar'}>
+                    <CircularProgress />
+                </div>
+                <ul> {todos.map((item: IBookListProps) =>
+                    <li key={item.name}>
+                        <Link to={`/library/detail/${item._id}`}>{item.name}</Link><div className={Favorite(item._id) ? 'addedFavorite' : ''}><span className="material-icons" onClick={() => { addFavorite(item._id) }}>
+                            star
+                        </span></div>
+                    </li>)}</ul>
+            </div>
         </>
     )
 }

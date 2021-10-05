@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Input, InputLabel, FormGroup, Card, CardHeader } from '@material-ui/core';
 import { useHttp } from '../../hooks/http.hook';
+// import { useHttpAuth} from '../../hooks/http.auth.hook';
 import { useHistory } from "react-router-dom";
 
-export default function LoginPage() {
+interface loggedProps {
+    logged: (val: boolean) => void
+}
+
+export default function LoginPage({ logged }: loggedProps) {
     type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
     type focusTarget = React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>;
 
@@ -61,8 +66,8 @@ export default function LoginPage() {
         try {
             const body = JSON.stringify({ login: login, password: password });
             const data = await request('/api/users/login', 'POST', body);
-            console.log('data', data);
             if (data) {
+                logged(true);
                 history.push("/library");
             }
         } catch (e) {

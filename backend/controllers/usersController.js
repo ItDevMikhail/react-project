@@ -19,7 +19,7 @@ class UsersController {
                 } else {
                     console.log(refreshToken)
                     const data = verifyJWT(refreshToken);
-                    const tokenId = JSON.stringify(data.id)
+                    const tokenId = JSON.stringify(data.id);
                     const newRefreshtoken = generateRefreshToken();
                     const checkToken = await TokenSchema.findOneAndUpdate({ tokenId: tokenId }, { tokenId: newRefreshtoken.id })
                     console.log(checkToken)

@@ -1,5 +1,4 @@
-export interface IBookListProps {
-    _id: string,
+export interface IAddBookProps {
     name: string,
     description: string
     picture?: string

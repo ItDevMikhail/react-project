@@ -1,20 +1,50 @@
-.App {
-  text-align: center;
+a {
+  color: #fff;
+  text-decoration: none;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.container {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 15px;
+}
+.header {
+  background-color: #20232a;
+  color: #ffffff;
+  z-index: 1;
+  width: 100%;
+}
+.navMenu {
+  display: flex;
+  justify-content: space-between;
+  height: 60px;
+}
+.navMenuleft,
+.navMenuRight {
+  height: 100%;
+  display: flex;
+}
+.navMenuleft a,
+.navMenuRight a {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 15px;
+  font-size: 18px;
+}
+a.selected {
+  border-bottom: 3px solid #61dafb;
+  color: #61dafb;
+}
+.header a:hover {
+  border-bottom: 3px solid #61dafb;
+  color: #61dafb;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-h2 {
-  text-align: center;
-}
 .registerForm,
 .loginForm {
   display: flex;
@@ -39,59 +69,52 @@ h2 {
   max-width: 320px;
   margin: 100px auto;
 }
-svg.MuiSvgIcon-root {
-  width: auto;
-  height: 36px;
-  border-radius: 5px;
-  fill: #000;
-  background-color: #e0e0e0;
-}
-svg.MuiSvgIcon-root:hover {
-  fill: #e0e0e0;
-  background-color: #000;
-}
-#iconButton.MuiButton-root {
-  min-width: 0;
-  line-height: 0;
-}
 .registerCardHeader,
 .loginCardHeader {
   text-align: center;
 }
-.header {
+.libraryPage a {
+  color: #000;
+  font-weight: 700;
+  text-decoration: underline;
+}
+.libraryPage li {
+  margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  background-color: #3f51b5;
-  height: 100px;
 }
-.header a {
-  text-decoration: none;
+.libraryPage ul {
+  max-width: 300px;
+}
+.libraryPage {
+  position: relative;
+}
+.libraryPage span{
+  color: gray;
+  cursor: pointer;
+}
+.libraryPage span:hover{
   color: #000;
+  cursor: pointer;
 }
-.navMenuRight svg {
-  height: 36px;
-  width: 50px;
-  fill: #000;
-  border-radius: 5px;
-  background-color: #e0e0e0;
+.progressBar {
+  position: absolute;
+  top: 100px;
+  left: 70px;
+  display: none;
 }
-.navMenuRight svg:hover {
-  fill: #e0e0e0;
-  background-color: #000;
+.progressBar.active {
+  display: block;
 }
-#iconButton {
-  padding: 0;
-  background-color: transparent;
+.detailPage {
+  position: relative;
 }
-.selected #iconButton svg {
-  fill: #e0e0e0;
-  background-color: #000;
+.detailPage .active {
+  display: block;
 }
-.navMenuLeft .selected button {
-  background-color: #000;
-  color: #fff;
+.detailPage .hidden {
+  display: none;
 }
-.navMenuLeft a + a {
-  margin-left: 20px;
+.libraryPage .addedFavorite span{
+ color: #000;
 }
