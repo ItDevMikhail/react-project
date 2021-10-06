@@ -28,6 +28,9 @@ function App() {
     setIsLogged(false);
     try {
       const data = await request('/api/users/logout', 'GET');
+      if (data) {
+        sessionStorage.clear();
+      }
     } catch (e) {
       console.log(error);
     }
@@ -40,7 +43,6 @@ function App() {
       } else {
         setIsLogged(false);
       }
-      return data;
     } catch (error) {
       setIsLogged(false);
       console.log(errorMess);

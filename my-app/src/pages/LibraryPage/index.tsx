@@ -10,32 +10,49 @@ export default function LibraryPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [favorite, setFavorite] = useState(['']);
 
+    useEffect(() => {
+        const todo = sessionStorage.getItem('todos');
+        const favor = sessionStorage.getItem('favorite');
+        if (favor) {
+            setFavorite(JSON.parse(favor));
+        }
+        if (todo) {
+            setTodos(JSON.parse(todo));
+        } 
+            getBooks();
+            getFavorite();
+        return () => { setTodos(todos); setFavorite(favorite) };
+    }, []);
+
     const getBooks = async () => {
         setLoading(true);
         try {
             const data = await request('/api/library', 'GET');
             setLoading(false);
-            if (data) setTodos(data);
+            if (data) {
+                setTodos(data);
+                sessionStorage.setItem('todos', JSON.stringify(data));
+            }
             return data;
         } catch (e: any) {
             setLoading(false);
             console.log(error);
         }
     }
+
     const getFavorite = async () => {
         try {
             const data = await request('/api/library/favorite', 'GET');
-            if (data) setFavorite(data);
+            if (data) {
+                setFavorite(data);
+                sessionStorage.setItem('favorite', JSON.stringify(data));
+            }
             return data;
         } catch (e: any) {
             console.log(error);
         }
     }
-    useEffect(() => {
-        getBooks();
-        getFavorite()
-        return () => { setTodos(todos); setFavorite(favorite)};
-    }, [])
+
     const addFavorite = async (bookId: string) => {
         try {
             const response = await fetch(`/api/library/addFavorite/${bookId}`, {
@@ -45,8 +62,9 @@ export default function LibraryPage() {
             if (!response.ok) {
                 throw new Error(data.message || 'чёт не то');
             }
-            if (data){
+            if (data) {
                 setFavorite(data);
+                sessionStorage.setItem('favorite', JSON.stringify(data));
             }
         } catch (e: any) {
             setFavorite(['']);
