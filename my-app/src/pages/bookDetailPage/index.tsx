@@ -11,7 +11,7 @@ export default function BookDetailPage() {
     useEffect(() => {
         console.log(location.pathname);
         setLoading(true);
-        const book = async () => {
+        const getBook = async () => {
             try {
                 const response = await fetch(`/api${location.pathname}`, {
                     method: 'GET'
@@ -28,7 +28,7 @@ export default function BookDetailPage() {
                 console.log(e.message);
             }
         }
-        book();
+        getBook();
         return () => { setTodos(todos)};
     }, [])
 

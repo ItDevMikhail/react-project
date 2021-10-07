@@ -69,6 +69,29 @@ class BooksController {
             res.status(500).json(e)
         }
     }
+    async getToDashboard(req, res) {
+        try {
+            const refreshToken = req.cookies.refreshToken;
+            const data = verifyJWT(refreshToken);
+            const tokenId = JSON.stringify(data.id);
+            const checkToken = await TokenSchema.findOne({ tokenId: tokenId });
+            if (checkToken) {
+                const favorite = await Favorite.find({ userId: checkToken.userId });
+                if (favorite.length > 0) {
+                    let booksId = [];
+                    for (let i = 0; i < favorite.length; i++) {
+                        booksId[i] = favorite[i].bookId
+                    }
+                    const getFav = await Library.find({ _id: booksId })
+                    res.json(getFav)
+                } else {
+                    res.status(404).json({ message: 'Not Found' })
+                }
+            }
+        } catch (e) {
+            res.status(500).json(e)
+        }
+    }
     async getFavorite(req, res) {
         try {
             const refreshToken = req.cookies.refreshToken;
@@ -81,6 +104,20 @@ class BooksController {
             } else {
                 return res.json();
             }
+        } catch (e) {
+            res.status(500).json(e)
+        }
+    }
+    async deleteBook(req, res) {
+        try {
+            console.log('запрос на удаление пришле');
+            console.log(req.body);
+            const bookId = req.body.bookId
+            console.log(bookId);
+            const deleteBook = await Library.findByIdAndDelete(bookId)
+            console.log(deleteBook);
+            await Favorite.deleteMany({ bookId: bookId })
+            res.json(deleteBook)
         } catch (e) {
             res.status(500).json(e)
         }

@@ -85,7 +85,7 @@ export default function RegisterPage() {
         }
     }
 
-    const passwordHangler = (e: changeTarget) => {
+    const passwordHandler = (e: changeTarget) => {
         setPassword(e.target.value);
         const validPass: RegExp = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{7,})\S$/;
         if (validPass.test(String(e.target.value))) {
@@ -96,7 +96,7 @@ export default function RegisterPage() {
             setPasswordError('некорректный пароль')
         }
     }
-    const confPasswordHangler = (e: changeTarget) => {
+    const confPasswordHandler = (e: changeTarget) => {
         setConfPassword(e.target.value);
         if (e.target.value === password && e.target.value.length > 0) {
             setConfPasswordError('')
@@ -205,7 +205,7 @@ export default function RegisterPage() {
                         onFocus={e => focusHandler(e)}
                         placeholder="Введите пароль"
                         name="password"
-                        onChange={e => passwordHangler(e)}
+                        onChange={e => passwordHandler(e)}
                         value={password}
                         required />
                     {(passwordWrong && passwordError) && <div className="regErrors">{passwordError}</div>}
@@ -217,7 +217,7 @@ export default function RegisterPage() {
                         onFocus={e => focusHandler(e)}
                         placeholder="Подтвердите пароль"
                         name="confPassword"
-                        onChange={e => confPasswordHangler(e)}
+                        onChange={e => confPasswordHandler(e)}
                         value={confPassword}
                         required />
                     {(confPasswordWrong && confPasswordError) && <div className="regErrors">{confPasswordError}</div>}

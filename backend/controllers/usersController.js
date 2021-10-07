@@ -11,18 +11,15 @@ class UsersController {
     async autorization(req, res) {
         const accessToken = req.cookies.accessToken;
         const refreshToken = req.cookies.refreshToken;
-        console.log(req.cookies)
         try {
             if (!accessToken) {
                 if (!refreshToken) {
                     res.status(403).json({ message: 'No token', access: false });
                 } else {
-                    console.log(refreshToken)
                     const data = verifyJWT(refreshToken);
                     const tokenId = JSON.stringify(data.id);
                     const newRefreshtoken = generateRefreshToken();
                     const checkToken = await TokenSchema.findOneAndUpdate({ tokenId: tokenId }, { tokenId: newRefreshtoken.id })
-                    console.log(checkToken)
                     if (checkToken) {
                         const accessToken = generateAccessToken(checkToken.userId);
                         const accessExpires = privateData.jwt.tokens.access.expiresIn;
@@ -83,6 +80,23 @@ class UsersController {
                 }
             } else {
                 res.status(400).json({ message: 'Такого пользователя не существует' });
+            }
+        } catch (e) {
+            res.status(500).json(e);
+        }
+    }
+    async userData(req, res) {
+        try {
+            console.log('data')
+            const refreshToken = req.cookies.refreshToken;
+            const data = verifyJWT(refreshToken);
+            const tokenId = JSON.stringify(data.id);
+            const checkToken = await TokenSchema.findOne({ tokenId: tokenId });
+            console.log(checkToken)
+            if (checkToken) {
+                const userData = await Users.findById(checkToken.userId, { password: false });
+                console.log(userData);
+                res.json(userData);
             }
         } catch (e) {
             res.status(500).json(e);

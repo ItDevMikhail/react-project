@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, NavLink, Redirect, Switch } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
@@ -8,8 +8,10 @@ import RootGaurd from './commponents/guard/auth.guard';
 import AddBookPage from './pages/addBookPage/index';
 import HomePage from './pages/homePage';
 import BookDetailPage from './pages/bookDetailPage';
+import DashBoardPage from './pages/dashBoardPage';
 import { useHttp } from './hooks/http.hook';
 import { useHttpAuth } from './hooks/http.auth.hook';
+
 
 
 
@@ -63,6 +65,7 @@ function App() {
               </span></NavLink>
               <NavLink activeClassName="selected" to='/library' exact={true}>Library</NavLink>
               <NavLink activeClassName="selected" to='/library/add' exact={true}>Add book</NavLink>
+              <NavLink activeClassName="selected" to='/user/dashboard' exact={true}>Dashboard</NavLink>
             </div><div className="navMenuRight"><NavLink activeClassName="selected" to='/login' onClick={logout}><span className="material-icons">
               logout
             </span></NavLink></div></nav>}
@@ -80,6 +83,9 @@ function App() {
           </Route>
           <Route path='/library/detail/:id' >
             <BookDetailPage />
+          </Route>
+          <Route path='/user/dashboard' >
+            <DashBoardPage />
           </Route>
           <Route path='/login' >
             <LoginPage logged={logged} />

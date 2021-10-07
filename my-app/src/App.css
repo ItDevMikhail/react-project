@@ -89,11 +89,13 @@ a.selected {
 .libraryPage {
   position: relative;
 }
-.libraryPage span{
+.libraryPage .starIcon,
+.deleteIcon {
   color: gray;
   cursor: pointer;
+  margin-left: 10px;
 }
-.libraryPage span:hover{
+.libraryPage span:hover {
   color: #000;
   cursor: pointer;
 }
@@ -115,6 +117,88 @@ a.selected {
 .detailPage .hidden {
   display: none;
 }
-.libraryPage .addedFavorite span{
- color: #000;
+.libraryPage .addedFavorite .starIcon {
+  color: #000;
+}
+
+#searchBtn {
+  margin-left: 5px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 2px solid transparent;
+  padding: 4px 8px;
+}
+#searchBtn span {
+  color: #20232a;
+}
+#cancelBtn,
+#acceptBtn {
+  border-bottom: 2px solid transparent;
+  padding: 4px 8px;
+}
+#searchBtn:hover,
+#cancelBtn:hover,
+#acceptBtn:hover {
+  border-bottom: 2px solid #61dafb;
+}
+#searchBtn:hover span,
+#cancelBtn:hover span,
+#acceptBtn:hover span {
+  color: #61dafb;
+}
+.searchForm {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.searchForm input {
+  width: 230px;
+  padding-right: 20px;
+}
+#searchIcons {
+  position: absolute;
+  left: 230px;
+  cursor: default;
+}
+#searchIcons {
+  color: gray;
+}
+.addBookInput .addBookInputName,
+.addBookInput .MuiInput-underline:after,
+.addBookInput .MuiFormControl-root,
+.addBookInput .MuiInput-underline:hover:not(.Mui-disabled):before{
+  border-bottom: 1px solid red;
+}
+
+.addBookInput .MuiInput-underline:before{
+  border: none;
+}
+.dashboard h1{
+  text-align: center;
+}
+.dashboardTop{
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 600px;
+}
+.dashboardTopBlock{
+  margin-bottom: 40px;
+  border: 1px solid #61dafb;
+  border-radius: 30px;
+  box-shadow: 0 1px 10px 4px  rgba(34, 60, 80, 0.4);
+}
+.dashboardTopBlock p{
+  padding: 0 15px;
+}
+.dashboardTopBlock a{
+  color: #000;text-decoration: underline;
+  font-weight: 500;
+}
+.dashboardProgressBar{
+  margin: 50px 0 70px 45%;
+  display: none;
+}
+.dashboardProgressBar.active{
+  display: block;
 }

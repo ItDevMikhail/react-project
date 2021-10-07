@@ -8,6 +8,8 @@ booksRouter.post('/add', BooksController.addBook);
 booksRouter.get('/detail/:id', BooksController.getBook);
 booksRouter.get('/addFavorite/:id', BooksController.addToFavorite);
 booksRouter.get('/favorite', BooksController.getFavorite);
+booksRouter.delete('', BooksController.deleteBook)
+booksRouter.get('/dashboard', BooksController.getToDashboard)
 
 
 

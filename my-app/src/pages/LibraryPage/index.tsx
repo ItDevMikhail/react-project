@@ -3,12 +3,18 @@ import { Link } from 'react-router-dom';
 import { IBookListProps } from '../../models/iBooks';
 import { CircularProgress } from '@material-ui/core';
 import { useHttp } from '../../hooks/http.hook';
+import SearchInputComponent from '../../commponents/searchInput';
+import BooksListComponent from '../../commponents/booksList';
 
 export default function LibraryPage() {
     const [todos, setTodos] = useState<IBookListProps[]>([{ _id: Date.now().toString(), name: 'Библиотека книг пуста', description: '' }]);
     const { error, request } = useHttp();
+
     const [loading, setLoading] = useState<boolean>(false);
-    const [favorite, setFavorite] = useState(['']);
+
+    const [favorite, setFavorite] = useState<Array<object>>([{}]);
+
+    const [filter, setFilter] = useState<string>('');
 
     useEffect(() => {
         const todo = sessionStorage.getItem('todos');
@@ -53,6 +59,18 @@ export default function LibraryPage() {
         }
     }
 
+    const deleteBook = async (bookId: string) => {
+        try {
+            const data = await request('/api/library', 'DELETE', JSON.stringify({bookId: bookId}));
+            if (data) {
+                getBooks();
+            }
+        } catch (e: any) {
+            setFavorite([{}]);
+            console.log(e.message);
+        }
+    }
+
     const addFavorite = async (bookId: string) => {
         try {
             const response = await fetch(`/api/library/addFavorite/${bookId}`, {
@@ -67,13 +85,13 @@ export default function LibraryPage() {
                 sessionStorage.setItem('favorite', JSON.stringify(data));
             }
         } catch (e: any) {
-            setFavorite(['']);
+            setFavorite([{}]);
             console.log(e.message);
         }
     }
     const Favorite = (itemId: string) => {
         if (favorite.length) {
-            let favor = favorite.filter((data: any) => data.bookId == itemId)
+            let favor = favorite.filter((data: any) => data.bookId === itemId)
             if (favor.length > 0) {
                 return true
             } else {
@@ -83,20 +101,26 @@ export default function LibraryPage() {
             return false
         }
     }
+    const onFilterChanged = (val: string) => {
+        setFilter(val.trim())
+    }
+
+    let filtredTodos = filter.length > 0 ?
+    todos.filter(todo => todo.name.toUpperCase().includes(filter.toUpperCase())) :
+    todos;
+
 
     return (
         <>
             <div className="container libraryPage">
                 <h2>Library page</h2>
+                <SearchInputComponent onFilterChanged={onFilterChanged}/>  
+                <br />
+                <br />          
                 <div className={loading ? 'progressBar active' : 'progressBar'}>
                     <CircularProgress />
                 </div>
-                <ul> {todos.map((item: IBookListProps) =>
-                    <li key={item.name}>
-                        <Link to={`/library/detail/${item._id}`}>{item.name}</Link><div className={Favorite(item._id) ? 'addedFavorite' : ''}><span className="material-icons" onClick={() => { addFavorite(item._id) }}>
-                            star
-                        </span></div>
-                    </li>)}</ul>
+                <BooksListComponent todos={filtredTodos} Favorite={Favorite} addFavorite={addFavorite} deleteBook={deleteBook}/>
             </div>
         </>
     )

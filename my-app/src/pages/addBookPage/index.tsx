@@ -61,7 +61,7 @@ export default function AddBookPage() {
             <Card className="loginCard">
                 <CardHeader title="Добавить книгу" className="loginCardHeader"></CardHeader>
                 <form className="loginForm">
-                    <FormGroup>
+                    <FormGroup className={nameError ? 'addBookInput' : ''}>
                         <InputLabel htmlFor="login">Название книги*</InputLabel>
                         <Input id="name"
                             type="text"
@@ -69,10 +69,11 @@ export default function AddBookPage() {
                             placeholder="Введите название книги"
                             onChange={e => nameHandler(e)}
                             value={book.name}
+                            className="addBookInputName"
                             required />
                     </FormGroup>
                     <br />
-                    <FormGroup>
+                    <FormGroup className={descrError ? 'addBookInput' : ''}>
                         <InputLabel htmlFor="password">Описание*</InputLabel>
                         <TextField className='createBookArea'
                             id="decription"
