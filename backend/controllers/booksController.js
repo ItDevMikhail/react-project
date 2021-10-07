@@ -2,6 +2,7 @@ import Library from "../models/books.js";
 import TokenSchema from "../models/token.js";
 import Favorite from "../models/favorite.js";
 import { verifyJWT } from "../encrypting/token.js";
+import { unlink } from 'fs';
 
 class BooksController {
     async getBooks(req, res) {
@@ -32,16 +33,34 @@ class BooksController {
             res.status(500).json(e)
         }
     }
-    async addBook(req, res) {
+    // async addBook(req, res) {
+    //     try {
+    //         const book = req.body;
+    //         const checkBook = await Library.findOne({ name: book.name });
+    //         if (checkBook) {
+    //             res.status(400).json({ msg: 'Такая книга уже есть' });
+    //         } else {
+    //             console.log('почти создал');
+    //             const addBook = await Library.create({ ...book });
+    //             res.json(addBook);
+    //         }
+    //     } catch (e) {
+    //         res.status(500).json(e)
+    //     }
+    // }
+    async createBook(req, res) {
         try {
-            const book = req.body;
-            const checkBook = await Library.findOne({ name: book.name });
-            if (checkBook) {
-                res.status(400).json({ msg: 'Такая книга уже есть' });
+            let filedata = req.file;
+            const getbook = JSON.parse(req.body.book)
+            const library = await Library.findOne({ name: getbook.name })
+            if (library) {
+                res.status(400).json({ msg: 'Такая книга уже есть' })
+            } else if (!filedata) {
+                const book = await Library.create(getbook)
+                res.json(book)
             } else {
-                console.log('почти создал');
-                const addBook = await Library.create({ ...book });
-                res.json(addBook);
+                const book = await Library.create({ ...getbook, picture: filedata.filename })
+                res.json(book)
             }
         } catch (e) {
             res.status(500).json(e)
@@ -110,13 +129,15 @@ class BooksController {
     }
     async deleteBook(req, res) {
         try {
-            console.log('запрос на удаление пришле');
-            console.log(req.body);
             const bookId = req.body.bookId
-            console.log(bookId);
-            const deleteBook = await Library.findByIdAndDelete(bookId)
-            console.log(deleteBook);
+            const deleteBook = await Library.findByIdAndDelete(bookId);
             await Favorite.deleteMany({ bookId: bookId })
+            if (deleteBook.picture) {
+                unlink(`backend/static/${deleteBook.picture}`, (err) => {
+                    if (err) throw err;
+                    console.log(`picture: ${deleteBook.picture} was deleted`);
+                })
+            }         
             res.json(deleteBook)
         } catch (e) {
             res.status(500).json(e)

@@ -29,7 +29,7 @@ export default function BookDetailPage() {
             }
         }
         getBook();
-        return () => { setTodos(todos)};
+        return () => { setTodos(todos) };
     }, [])
 
     return (
@@ -42,6 +42,10 @@ export default function BookDetailPage() {
                 <div className={!loading ? 'active' : 'hidden'}>
                     <h3>Название книги: {todos.name}</h3>
                     <p>Описание книги: {todos.description}</p>
+                    {todos.picture && <div>
+                        <p><strong>Обложка книги:</strong></p>
+                        <img className="detailImg" src={`http://localhost:5000/${todos.picture}`} alt="images"/>
+                    </div>}
                 </div>
             </div>
         </>

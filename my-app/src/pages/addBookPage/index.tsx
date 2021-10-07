@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, HTMLInputTypeAttribute } from 'react';
 import { IAddBookProps } from '../../models/iAddbook';
 import { Button, Input, InputLabel, FormGroup, Card, CardHeader, TextField } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
@@ -10,15 +10,57 @@ export default function AddBookPage() {
     const [nameError, setNameError] = useState<boolean>(true);
     const [descrError, setDescrError] = useState<boolean>(true);
     const [formValid, setFormValid] = useState<boolean>(false);
+    const [files, setFiles] = useState<any>();
+    const [filesError, setFilesError] = useState<boolean>(false);
     let history = useHistory();
 
+    const addBookHandler = async () => {
+        const formData = new FormData();
+        formData.append('book', JSON.stringify(book));
+        if (files) {
+            formData.append('picture', files[0]);
+        } else {
+        }
+        try {
+            const response = await fetch('/api/library/add', {
+                method: 'POST',
+                body: formData,
+            })
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'чёт не то');
+            }
+            if (data) {
+                history.push(`/library/detail/${data._id}`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const addPicture = (event: any) => {
+        let target = event.target || event.scrElement;
+        console.log(target.files);
+        if (target.files.length > 0) {
+            if (target.files[0].type.includes('image')) {
+                setFiles(target.files);
+            } else {
+                setFilesError(true);
+                setFiles(target.files);
+            }
+        } else{
+            setFilesError(false);
+            setFiles('');
+        }
+    }
+
     useEffect(() => {
-        if (nameError || descrError) {
+        if (nameError || descrError || filesError) {
             setFormValid(false)
         } else {
             setFormValid(true)
         }
-    }, [nameError, descrError])
+    }, [nameError, descrError, filesError])
 
     const nameHandler = (e: changeTarget) => {
         setBooks({ name: e.target.value, description: book.description });
@@ -36,26 +78,26 @@ export default function AddBookPage() {
             setDescrError(false);
         }
     }
-    const addBookHandler = async () => {
-        try {
-            const response = await fetch('/api/library/add', {
-                method: 'POST',
-                body: JSON.stringify(book),
-                headers: {
-                    'Content-type': 'application/json'
-                }
-            })
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message || 'чёт не то');
-            }
-            if (data) {
-                history.push(`/library/detail/${data._id}`);
-            }
-        } catch (e: any) {
-            console.log(e.message);
-        }
-    }
+    // const addBookHandler = async () => {
+    //     try {
+    //         const response = await fetch('/api/library/add', {
+    //             method: 'POST',
+    //             body: JSON.stringify(book),
+    //             headers: {
+    //                 'Content-type': 'application/json'
+    //             }
+    //         })
+    //         const data = await response.json();
+    //         if (!response.ok) {
+    //             throw new Error(data.message || 'чёт не то');
+    //         }
+    //         if (data) {
+    //             history.push(`/library/detail/${data._id}`);
+    //         }
+    //     } catch (e: any) {
+    //         console.log(e.message);
+    //     }
+    // }
     return (
         <>
             <Card className="loginCard">
@@ -74,9 +116,9 @@ export default function AddBookPage() {
                     </FormGroup>
                     <br />
                     <FormGroup className={descrError ? 'addBookInput' : ''}>
-                        <InputLabel htmlFor="password">Описание*</InputLabel>
+                        <InputLabel htmlFor="description">Описание*</InputLabel>
                         <TextField className='createBookArea'
-                            id="decription"
+                            id="description"
                             placeholder="Напишите описание книги"
                             onChange={e => descriptionHandler(e)}
                             name="description"
@@ -87,6 +129,10 @@ export default function AddBookPage() {
                             maxRows={6}
                         />
                     </FormGroup>
+                    <br />
+                    <label className="uploadLabel" htmlFor="uploadPicture">Добавить фото книги</label> {files && <span>{files[0].name}</span>}
+                    {filesError && <span style={{color: 'red'}}>Проверьте формат файла</span>}
+                    <input type="file" name="photo" id="uploadPicture" accept=".jpg, .jpeg, .png" onChange={($event) => addPicture($event)} />
                     <br />
                     <Button color="primary" variant="contained" disabled={!formValid} onClick={addBookHandler}>Создать</Button>
                     <br />

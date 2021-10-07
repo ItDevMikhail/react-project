@@ -13,13 +13,14 @@ const app = express();
 
 const mongoUrl = 'mongodb+srv://user:user@cluster0.1cstu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
-app.use(cookieParser());
+
 app.use(cors({
     origin: "http://localhost:3000",
     credentials: true,
 }));
 app.use(express.json());
 app.use(express.static('backend/static'));
+app.use(cookieParser());
 
 // app.use(function (req, res, next) {
 //     res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
