@@ -226,3 +226,11 @@ a.selected {
 .uploadLabel:hover{
   border-color: #61dafb;
 }
+.detailImg{
+ max-width: 600px;
+ max-height: 600px;
+ object-fit: contain;
+}
+.descriptionText{
+  max-width: 500px;
+}

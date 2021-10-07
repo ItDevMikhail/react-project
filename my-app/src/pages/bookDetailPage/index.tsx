@@ -41,7 +41,7 @@ export default function BookDetailPage() {
                 </div>
                 <div className={!loading ? 'active' : 'hidden'}>
                     <h3>Название книги: {todos.name}</h3>
-                    <p>Описание книги: {todos.description}</p>
+                    <p className="descriptionText"><strong>Описание книги:</strong> {todos.description}</p>
                     {todos.picture && <div>
                         <p><strong>Обложка книги:</strong></p>
                         <img className="detailImg" src={`http://localhost:5000/${todos.picture}`} alt="images"/>
