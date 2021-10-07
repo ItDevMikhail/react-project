@@ -64,6 +64,13 @@ a.selected {
 .inputErrors {
   border-bottom: 1px solid red;
 }
+.registerCard .inputErrors.MuiInput-underline:after,
+.registerCard .inputErrors.MuiFormControl-root,
+.registerCard .inputErrors.MuiInput-underline:hover:not(.Mui-disabled):before{
+  border-bottom: 1px solid red;
+}
+
+
 .registerCard,
 .loginCard {
   max-width: 320px;

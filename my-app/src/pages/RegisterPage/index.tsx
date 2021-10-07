@@ -7,7 +7,7 @@ export default function RegisterPage() {
     type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
     type focusTarget = React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>;
 
-    const {loading, error, request} = useHttp();
+    const { loading, error, request } = useHttp();
 
     const [login, setLogin] = useState<string>('');
     const [name, setName] = useState<string>('');
@@ -133,12 +133,12 @@ export default function RegisterPage() {
         }
     }
 
-    const registerHandler = async () =>{
+    const registerHandler = async () => {
         try {
-            const body = JSON.stringify({login: login, name: name, lastName: lastName, email: email, password: password});
+            const body = JSON.stringify({ login: login, name: name, lastName: lastName, email: email, password: password });
             const data = await request('/api/users/reg', 'POST', body);
             console.log('data', data);
-            if(data){
+            if (data) {
                 history.push("/login");
             }
         } catch (e) {
@@ -159,6 +159,7 @@ export default function RegisterPage() {
                         placeholder="Введите логин"
                         onChange={e => loginHandler(e)}
                         value={login}
+                        className={(loginWrong && loginError) ? 'inputErrors' : ''}
                         required />
                     {(loginWrong && loginError) && <div className="regErrors">{loginError}</div>}
                 </FormGroup>
@@ -195,6 +196,7 @@ export default function RegisterPage() {
                         name="email"
                         onChange={e => emailHandler(e)}
                         value={email}
+                        className={(emailWrong && emailError) ? 'inputErrors' : ''}
                         required />
                     {(emailWrong && emailError) && <div className="regErrors">{emailError}</div>}
                 </FormGroup>
@@ -207,6 +209,7 @@ export default function RegisterPage() {
                         name="password"
                         onChange={e => passwordHandler(e)}
                         value={password}
+                        className={(passwordWrong && passwordError) ? 'inputErrors' : ''}
                         required />
                     {(passwordWrong && passwordError) && <div className="regErrors">{passwordError}</div>}
                 </FormGroup>
@@ -219,6 +222,7 @@ export default function RegisterPage() {
                         name="confPassword"
                         onChange={e => confPasswordHandler(e)}
                         value={confPassword}
+                        className={(confPasswordWrong && confPasswordError) ? 'inputErrors' : ''}
                         required />
                     {(confPasswordWrong && confPasswordError) && <div className="regErrors">{confPasswordError}</div>}
                 </FormGroup>
