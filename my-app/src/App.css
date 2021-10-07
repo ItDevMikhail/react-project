@@ -65,6 +65,7 @@ a.selected {
   border-bottom: 1px solid red;
 }
 .registerCard .inputErrors.MuiInput-underline:after,
+.registerCard .inputErrors.MuiInput-underline:before,
 .registerCard .inputErrors.MuiFormControl-root,
 .registerCard .inputErrors.MuiInput-underline:hover:not(.Mui-disabled):before{
   border-bottom: 1px solid red;
