@@ -13,6 +13,7 @@ import { useHttp } from './hooks/http.hook';
 import { useHttpAuth } from './hooks/http.auth.hook';
 import ErrorPage from './pages/errorPage';
 import { Tooltip, Zoom } from '@material-ui/core';
+import BlogPage from './pages/blogPage';
 
 
 
@@ -67,10 +68,12 @@ function App() {
               </span></NavLink></Tooltip>
               <NavLink activeClassName="selected" to='/library' exact={true}>Library</NavLink>
               <NavLink activeClassName="selected" to='/library/add' exact={true}>Add book</NavLink>
+              <NavLink activeClassName="selected" to='/blog' exact={true}>Blog</NavLink>
               <NavLink activeClassName="selected" to='/user/dashboard' exact={true}>Dashboard</NavLink>
-            </div><div className="navMenuRight"><Tooltip title='logout' placement="bottom-start" TransitionComponent={Zoom}><NavLink activeClassName="selected" to='/login' onClick={logout}><span className="material-icons">
-              logout
-            </span></NavLink></Tooltip></div></nav>}
+            </div>
+              <div className="navMenuRight"><Tooltip title='logout' placement="bottom-start" TransitionComponent={Zoom}><NavLink activeClassName="selected" to='/login' onClick={logout}><span className="material-icons">
+                logout
+              </span></NavLink></Tooltip></div></nav>}
             {!isLogged && <nav className="navMenu"><div></div><div className="navMenuRight"><Tooltip title='login' placement="bottom-start" TransitionComponent={Zoom}><NavLink activeClassName="selected" to='/login'><span className="material-icons">
               login
             </span></NavLink></Tooltip>
@@ -99,6 +102,9 @@ function App() {
           <Route path='/register'>
             <RegisterPage />
           </Route>
+          <Route path='/blog'>
+            <BlogPage />
+          </Route>
           <Route path='/library' exact={true}>
             <LibraryPage />
           </Route>
@@ -107,7 +113,6 @@ function App() {
           </Route>
           <Redirect to='/login' />
         </Switch>
-        {/* </MyContext.Provider> */}
       </RootGaurd>
     </Router>
   );

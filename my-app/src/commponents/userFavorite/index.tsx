@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-import { IBookListProps } from './../../models/iBooks';
 import BookDetModalComponent from './../bookDetModal/index';
 import { useState } from 'react';
 
@@ -22,7 +20,6 @@ export default function UserFavoriteComponent({ favoriteBooks }: IUserFavoritePr
                     <p>{index + 1} <a className='userFavoriteLink' onClick={()=>changeHandler(index)}>{item.name}</a></p>
                 </li>)}</ul>}
                 {!favoriteBooks[0].name && <p>У вас нет избранных книг</p>}
-                {/* <Link to={`/library/detail/${item._id}`}>{item.name}</Link> */}
                 <div><BookDetModalComponent favoriteBooks={favoriteBooks} index={index} changeHandler={changeHandler} open={open}/></div>
         </>
     )

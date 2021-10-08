@@ -289,29 +289,31 @@ a.selected {
   padding: 20px;
   border-radius: 30px;
   position: relative;
+  border: 1px solid #61dafb;
+  box-shadow: 0 1px 10px 4px rgba(34, 60, 80, 0.4);
 }
-.bookDetModalImg{
+.bookDetModalImg {
   max-width: 300px;
   max-height: 300px;
   object-fit: contain;
   margin-left: 15px;
 }
-.userFavoriteLink{
+.userFavoriteLink {
   cursor: pointer;
   line-height: 20px;
   transition: all 0.3s;
 }
-.userFavoriteLink:hover{
+.userFavoriteLink:hover {
   font-size: 17px;
 }
-.bookDetModalLink{
+.bookDetModalLink {
   margin-top: 20px;
   font-size: 14px;
   float: right;
   transition: all 0.3s;
   line-height: 16px;
 }
-.bookDetModalLink:hover{
+.bookDetModalLink:hover {
   font-size: 15px;
 }
 .modalClose {
@@ -322,23 +324,88 @@ a.selected {
   height: 22px;
   opacity: 0.3;
   transition: all 0.3s;
-  }
-  .modalClose:hover {
+}
+.modalClose:hover {
   opacity: 1;
   cursor: pointer;
   transform: scale(1.2);
-  }
-  .modalClose:before, .modalClose:after {
+}
+.modalClose:before,
+.modalClose:after {
   position: absolute;
   right: 10px;
-  content: ' ';
+  content: " ";
   height: 22px;
   width: 2px;
   background-color: #333;
-  }
-  .modalClose:before {
+}
+.modalClose:before {
   transform: rotate(45deg);
-  }
-  .modalClose:after {
+}
+.modalClose:after {
   transform: rotate(-45deg);
-  }
+}
+.blog {
+  display: flex;
+  justify-content: space-between;
+}
+.blogAside {
+  min-width: 270px;
+  background-color: #f1f1f1;
+  padding: 20px;
+  text-align: center;
+  height: calc(100vh - 60px);
+}
+.blogAside li {
+  margin-top: 10px;
+}
+.blogCopyright a {
+  background-color: rgba(187, 239, 253, 0.3);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  color: rgb(26, 26, 26);
+}
+.blogCopyright a:hover {
+  background-color: rgba(187, 239, 253, 1);
+}
+.blogAside a {
+  color: #000;
+  opacity: 0.5;
+}
+.blogAside a:hover {
+  opacity: 1;
+}
+.blogContent {
+  padding: 20px 40px;
+  background-color: #fff;
+}
+.blogContentList {
+  margin: 10px 20px;
+  font-size: 16px;
+  line-height: 20px;
+  color: #1a1a1a;
+}
+.blogContentListTitle {
+  padding-top: 20px;
+  font-size: 24px;
+  color: #6d6d6d;
+}
+.blogTitle {
+  font-size: 60px;
+  line-height: 70px;
+}
+.blogContentSubtitle {
+  font-size: 35px;
+  line-height: 36px;
+}
+.blogContentSubtitle::before {
+  content: " ";
+  display: block;
+  border-bottom: 1px solid #ececec;
+  padding-top: 44px;
+  margin-bottom: 40px;
+}
+.blogContentText{
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
