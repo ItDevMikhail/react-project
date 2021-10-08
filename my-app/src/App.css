@@ -232,7 +232,7 @@ a.selected {
   max-height: 300px;
   object-fit: contain;
 }
-.detailBigImg{
+.detailBigImg {
   cursor: zoom-in;
 }
 .descriptionText {
@@ -271,3 +271,74 @@ a.selected {
   font-size: 17px;
   padding: 5px;
 }
+.bookDetModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(34, 60, 80, 0.4);
+}
+.bookDetModalContent {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 30px;
+  position: relative;
+}
+.bookDetModalImg{
+  max-width: 300px;
+  max-height: 300px;
+  object-fit: contain;
+  margin-left: 15px;
+}
+.userFavoriteLink{
+  cursor: pointer;
+  line-height: 20px;
+  transition: all 0.3s;
+}
+.userFavoriteLink:hover{
+  font-size: 17px;
+}
+.bookDetModalLink{
+  margin-top: 20px;
+  font-size: 14px;
+  float: right;
+  transition: all 0.3s;
+  line-height: 16px;
+}
+.bookDetModalLink:hover{
+  font-size: 15px;
+}
+.modalClose {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  width: 22px;
+  height: 22px;
+  opacity: 0.3;
+  transition: all 0.3s;
+  }
+  .modalClose:hover {
+  opacity: 1;
+  cursor: pointer;
+  transform: scale(1.2);
+  }
+  .modalClose:before, .modalClose:after {
+  position: absolute;
+  right: 10px;
+  content: ' ';
+  height: 22px;
+  width: 2px;
+  background-color: #333;
+  }
+  .modalClose:before {
+  transform: rotate(45deg);
+  }
+  .modalClose:after {
+  transform: rotate(-45deg);
+  }

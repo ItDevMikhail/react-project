@@ -1,21 +1,29 @@
 import { Link } from 'react-router-dom';
 import { IBookListProps } from './../../models/iBooks';
+import BookDetModalComponent from './../bookDetModal/index';
+import { useState } from 'react';
 
 interface IUserFavoriteProps {
-    // favoriteBooks: IBookListProps[];
     favoriteBooks: Array<any>;
 }
 
-export default function UserFavoriteComponent({ favoriteBooks }: IUserFavoriteProps) {
+export default function UserFavoriteComponent({ favoriteBooks }: IUserFavoriteProps) {  
+    const [open, setOpen] = useState(false);
+    const [index, setIndex] = useState<number>(0);
+    const changeHandler = (index: number) =>{
+        setIndex(index);
+        setOpen(!open);
+    }
 
     return (
         <>
             {favoriteBooks[0].name && <ul> {favoriteBooks.map((item: any, index) =>
                 <li key={item.name}>
-                    <p>{index + 1} <Link to={`/library/detail/${item._id}`}>{item.name}</Link></p>
+                    <p>{index + 1} <a className='userFavoriteLink' onClick={()=>changeHandler(index)}>{item.name}</a></p>
                 </li>)}</ul>}
                 {!favoriteBooks[0].name && <p>У вас нет избранных книг</p>}
-
+                {/* <Link to={`/library/detail/${item._id}`}>{item.name}</Link> */}
+                <div><BookDetModalComponent favoriteBooks={favoriteBooks} index={index} changeHandler={changeHandler} open={open}/></div>
         </>
     )
 }
