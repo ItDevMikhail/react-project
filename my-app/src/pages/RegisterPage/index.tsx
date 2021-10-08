@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Input, InputLabel, FormGroup, Card, CardHeader } from '@material-ui/core';
 import { useHttp } from '../../hooks/http.hook';
 import { useHistory } from "react-router-dom";
+import MessageBoxComponent from './../../commponents/messageBox/index';
 
 export default function RegisterPage() {
     type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
@@ -139,7 +140,7 @@ export default function RegisterPage() {
             const data = await request('/api/users/reg', 'POST', body);
             console.log('data', data);
             if (data) {
-                history.push("/login");
+                // history.push("/login");
             }
         } catch (e) {
             console.log(error)
@@ -147,6 +148,8 @@ export default function RegisterPage() {
     }
 
     return (
+        <>
+        <MessageBoxComponent mess={error}/>
         <Card className="registerCard">
             <CardHeader title="Регистрация" className="registerCardHeader"></CardHeader>
             <form className="registerForm">
@@ -231,5 +234,6 @@ export default function RegisterPage() {
                 <br />
             </form>
         </Card>
+        </>
     )
 }

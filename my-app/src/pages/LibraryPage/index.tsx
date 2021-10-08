@@ -7,7 +7,7 @@ import SearchInputComponent from '../../commponents/searchInput';
 import BooksListComponent from '../../commponents/booksList';
 
 export default function LibraryPage() {
-    const [todos, setTodos] = useState<IBookListProps[]>([{ _id: Date.now().toString(), name: 'Библиотека книг пуста', description: '' }]);
+    const [todos, setTodos] = useState<IBookListProps[]>([{ _id: Date.now().toString(), name: '', description: '' }]);
     const { error, request } = useHttp();
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -38,6 +38,9 @@ export default function LibraryPage() {
             if (data) {
                 setTodos(data);
                 sessionStorage.setItem('todos', JSON.stringify(data));
+            } else {
+                setTodos([{_id: '', name: 'Библиотека книг пуста', description: ''}]);
+                sessionStorage.removeItem('todos');
             }
             return data;
         } catch (e: any) {

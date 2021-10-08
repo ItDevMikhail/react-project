@@ -9,7 +9,7 @@ import { CircularProgress } from '@material-ui/core';
 
 
 export default function DashBoardPage() {
-    const [favorite, setFavorite] = useState<IBookListProps[]>([]);
+    const [favorite, setFavorite] = useState<Array<object>>([{}]);
     const [user, setUser] = useState<IUserProps>();
     const { request, error } = useHttp();
     const [loading, setLoading] = useState<boolean>(false);
@@ -30,7 +30,6 @@ export default function DashBoardPage() {
             const data = await request('/api/users/user', 'GET');
             if (data) {
                 setUser(data);
-                console.log(data);
             }
             setLoading(false);
             return data;
@@ -46,6 +45,9 @@ export default function DashBoardPage() {
             if (data) {
                 setFavorite(data);
                 sessionStorage.setItem('favoriteDashboard', JSON.stringify(data));
+            } else {
+                setFavorite([{}]);
+                sessionStorage.removeItem('favoriteDashboard');
             }
             return data;
         } catch (e: any) {

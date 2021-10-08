@@ -2,6 +2,8 @@ import React, { useState, useEffect, HTMLInputTypeAttribute } from 'react';
 import { IAddBookProps } from '../../models/iAddbook';
 import { Button, Input, InputLabel, FormGroup, Card, CardHeader, TextField } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
+import { useHttp } from '../../hooks/http.hook';
+import MessageBoxComponent from '../../commponents/messageBox';
 
 export default function AddBookPage() {
     type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
@@ -13,6 +15,7 @@ export default function AddBookPage() {
     const [files, setFiles] = useState<any>();
     const [filesError, setFilesError] = useState<boolean>(false);
     let history = useHistory();
+    const {request, error} = useHttp();
 
     const addBookHandler = async () => {
         const formData = new FormData();
@@ -22,14 +25,15 @@ export default function AddBookPage() {
         } else {
         }
         try {
-            const response = await fetch('/api/library/add', {
-                method: 'POST',
-                body: formData,
-            })
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message || 'чёт не то');
-            }
+            const data = await request('/api/library/add', 'POST', formData, {});
+            // const response = await fetch('/api/library/add', {
+            //     method: 'POST',
+            //     body: formData,
+            // })
+            // const data = await response.json();
+            // if (!response.ok) {
+            //     throw new Error(data.message || 'чёт не то');
+            // }
             if (data) {
                 history.push(`/library/detail/${data._id}`);
             }
@@ -100,6 +104,7 @@ export default function AddBookPage() {
     // }
     return (
         <>
+        <MessageBoxComponent mess={error}/>
             <Card className="loginCard">
                 <CardHeader title="Добавить книгу" className="loginCardHeader"></CardHeader>
                 <form className="loginForm">

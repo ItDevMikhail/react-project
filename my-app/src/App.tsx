@@ -11,8 +11,8 @@ import BookDetailPage from './pages/bookDetailPage';
 import DashBoardPage from './pages/dashBoardPage';
 import { useHttp } from './hooks/http.hook';
 import { useHttpAuth } from './hooks/http.auth.hook';
-
-
+import ErrorPage from './pages/errorPage';
+import { Tooltip, Zoom } from '@material-ui/core';
 
 
 
@@ -20,6 +20,8 @@ function App() {
   const { request, error } = useHttp();
   const [isLogged, setIsLogged] = useState(true);
   const { requestAuth, errorMess } = useHttpAuth();
+
+
   const logged = (val: boolean) => {
     setIsLogged(val);
   }
@@ -47,7 +49,7 @@ function App() {
       }
     } catch (error) {
       setIsLogged(false);
-      console.log(errorMess);
+      console.log(error);
     }
   }
   useEffect(() => {
@@ -60,26 +62,30 @@ function App() {
         <div className="header">
           <div className="container">
             {isLogged && <nav className="navMenu"><div className="navMenuleft">
-              <NavLink activeClassName="selected" to='/home' exact={true}><span className="material-icons">
+              <Tooltip title='Home' placement="bottom-start" TransitionComponent={Zoom}><NavLink activeClassName="selected" to='/home' exact={true}><span className="material-icons">
                 home
-              </span></NavLink>
+              </span></NavLink></Tooltip>
               <NavLink activeClassName="selected" to='/library' exact={true}>Library</NavLink>
               <NavLink activeClassName="selected" to='/library/add' exact={true}>Add book</NavLink>
               <NavLink activeClassName="selected" to='/user/dashboard' exact={true}>Dashboard</NavLink>
-            </div><div className="navMenuRight"><NavLink activeClassName="selected" to='/login' onClick={logout}><span className="material-icons">
+            </div><div className="navMenuRight"><Tooltip title='logout' placement="bottom-start" TransitionComponent={Zoom}><NavLink activeClassName="selected" to='/login' onClick={logout}><span className="material-icons">
               logout
-            </span></NavLink></div></nav>}
-            {!isLogged && <nav className="navMenu"><div></div><div className="navMenuRight"><NavLink activeClassName="selected" to='/login'><span className="material-icons">
+            </span></NavLink></Tooltip></div></nav>}
+            {!isLogged && <nav className="navMenu"><div></div><div className="navMenuRight"><Tooltip title='login' placement="bottom-start" TransitionComponent={Zoom}><NavLink activeClassName="selected" to='/login'><span className="material-icons">
               login
-            </span></NavLink>
-              <NavLink activeClassName="selected" to='/register'><span className="material-icons">
-                person_add_alt
-              </span></NavLink></div></nav>}
+            </span></NavLink></Tooltip>
+              <Tooltip title='Registration' placement="bottom-start" TransitionComponent={Zoom}>
+                <NavLink activeClassName="selected" to='/register'><span className="material-icons">
+                  person_add_alt
+                </span></NavLink></Tooltip></div></nav>}
           </div>
         </div>
         <Switch>
           <Route path='/home' >
             <HomePage />
+          </Route>
+          <Route path='/error' >
+            <ErrorPage errorMess={errorMess} />
           </Route>
           <Route path='/library/detail/:id' >
             <BookDetailPage />
@@ -101,6 +107,7 @@ function App() {
           </Route>
           <Redirect to='/login' />
         </Switch>
+        {/* </MyContext.Provider> */}
       </RootGaurd>
     </Router>
   );

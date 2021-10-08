@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Input, InputLabel, FormGroup, Card, CardHeader } from '@material-ui/core';
 import { useHttp } from '../../hooks/http.hook';
-// import { useHttpAuth} from '../../hooks/http.auth.hook';
 import { useHistory } from "react-router-dom";
+import MessageBoxComponent from './../../commponents/messageBox/index';
 
 interface loggedProps {
     logged: (val: boolean) => void
@@ -22,8 +22,9 @@ export default function LoginPage({ logged }: loggedProps) {
     const [passwordError, setPasswordError] = useState<string>('введите пароль');
     const [formValid, setFormValid] = useState<boolean>(false);
 
-    const { loading, error, request } = useHttp();
+    const { loading, error, request} = useHttp();
     let history = useHistory();
+
 
     useEffect(() => {
         if (loginError || passwordError) {
@@ -66,47 +67,51 @@ export default function LoginPage({ logged }: loggedProps) {
         try {
             const body = JSON.stringify({ login: login, password: password });
             const data = await request('/api/users/login', 'POST', body);
+            console.log(error);
             if (data) {
                 logged(true);
                 history.push("/library");
             }
         } catch (e) {
-            console.log(error)
+            console.log(error);
         }
     }
 
     return (
-        <Card className="loginCard">
-            <CardHeader title="Авторизация" className="loginCardHeader"></CardHeader>
-            <form className="loginForm">
-                <FormGroup>
-                    <InputLabel htmlFor="login">Логин*</InputLabel>
-                    <Input id="login"
-                        onFocus={e => focusHandler(e)}
-                        type="text"
-                        name="login"
-                        placeholder="Введите логин"
-                        onChange={e => loginHandler(e)}
-                        value={login}
-                        required />
-                    {(loginWrong && loginError) && <div className="regErrors">{loginError}</div>}
-                </FormGroup>
-                <br />
-                <FormGroup>
-                    <InputLabel htmlFor="password">Пароль*</InputLabel>
-                    <Input id="password" type="password"
-                        onFocus={e => focusHandler(e)}
-                        placeholder="Введите пароль"
-                        name="password"
-                        onChange={e => passwordHandler(e)}
-                        value={password}
-                        required />
-                    {(passwordWrong && passwordError) && <div className="regErrors">{passwordError}</div>}
-                </FormGroup>
-                <br />
-                <Button color="primary" variant="contained" type='submit' disabled={!formValid || loading} onClick={authHandler}>Войти</Button>
-                <br />
-            </form>
-        </Card>
+        <>
+            <MessageBoxComponent mess={error} />
+            <Card className="loginCard">
+                <CardHeader title="Авторизация" className="loginCardHeader"></CardHeader>
+                <form className="loginForm">
+                    <FormGroup>
+                        <InputLabel htmlFor="login">Логин*</InputLabel>
+                        <Input id="login"
+                            onFocus={e => focusHandler(e)}
+                            type="text"
+                            name="login"
+                            placeholder="Введите логин"
+                            onChange={e => loginHandler(e)}
+                            value={login}
+                            required />
+                        {(loginWrong && loginError) && <div className="regErrors">{loginError}</div>}
+                    </FormGroup>
+                    <br />
+                    <FormGroup>
+                        <InputLabel htmlFor="password">Пароль*</InputLabel>
+                        <Input id="password" type="password"
+                            onFocus={e => focusHandler(e)}
+                            placeholder="Введите пароль"
+                            name="password"
+                            onChange={e => passwordHandler(e)}
+                            value={password}
+                            required />
+                        {(passwordWrong && passwordError) && <div className="regErrors">{passwordError}</div>}
+                    </FormGroup>
+                    <br />
+                    <Button color="primary" variant="contained" type='submit' disabled={!formValid || loading} onClick={authHandler}>Войти</Button>
+                    <br />
+                </form>
+            </Card>
+        </>
     )
 }

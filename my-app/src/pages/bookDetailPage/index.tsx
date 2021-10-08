@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { IBookListProps } from "../../models/iBooks";
 import { useLocation } from "react-router";
 import { CircularProgress } from '@material-ui/core';
+import Fancybox from "../../commponents/galleryPopup";
 
 export default function BookDetailPage() {
     const [todos, setTodos] = useState<IBookListProps>({ _id: '', name: '', description: '' });
@@ -42,13 +43,15 @@ export default function BookDetailPage() {
                 <div className={!loading ? 'active' : 'hidden'}>
                     <h3>Название книги: {todos.name}</h3>
                     <p className="descriptionText"><strong>Описание книги:</strong> {todos.description}</p>
-                    {todos.picture && <div>
+                    {todos.picture && <Fancybox>
                         <p><strong>Обложка книги:</strong></p>
-                        <img className="detailImg" src={`http://localhost:5000/${todos.picture}`} alt="images"/>
-                    </div>}
+                        <a data-fancybox="gallery" className="detailBigImg" href={`http://localhost:5000/${todos.picture}`}>
+                            <img alt="images" className="detailImg" src={`http://localhost:5000/${todos.picture}`} />
+                        </a>
+                    </Fancybox>}
                 </div>
             </div>
+
         </>
     )
-
 }

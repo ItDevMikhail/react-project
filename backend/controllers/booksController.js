@@ -33,28 +33,13 @@ class BooksController {
             res.status(500).json(e)
         }
     }
-    // async addBook(req, res) {
-    //     try {
-    //         const book = req.body;
-    //         const checkBook = await Library.findOne({ name: book.name });
-    //         if (checkBook) {
-    //             res.status(400).json({ msg: 'Такая книга уже есть' });
-    //         } else {
-    //             console.log('почти создал');
-    //             const addBook = await Library.create({ ...book });
-    //             res.json(addBook);
-    //         }
-    //     } catch (e) {
-    //         res.status(500).json(e)
-    //     }
-    // }
     async createBook(req, res) {
         try {
             let filedata = req.file;
             const getbook = JSON.parse(req.body.book)
             const library = await Library.findOne({ name: getbook.name })
             if (library) {
-                res.status(400).json({ msg: 'Такая книга уже есть' })
+                res.status(400).json({ message: 'Такая книга уже есть' })
             } else if (!filedata) {
                 const book = await Library.create(getbook)
                 res.json(book)

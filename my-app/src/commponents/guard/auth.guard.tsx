@@ -7,7 +7,7 @@ const AuthGaurd = ({ children, check }: any) => {
     const location = useLocation();
     useEffect(() => {
         const auth = check();
-        if (location.pathname !== '/login' && location.pathname !== '/register' && !auth) {
+        if (location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/error' && !auth) {
             history.push("/login");
         }
     }, [location]);

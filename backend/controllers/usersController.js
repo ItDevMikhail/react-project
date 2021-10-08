@@ -36,7 +36,7 @@ class UsersController {
                 res.json({ message: 'Token is valid', access: true });
             }
         } catch (e) {
-            res.status(500);
+            res.status(404);
         }
     }
     async logout(req, res) {
@@ -44,7 +44,7 @@ class UsersController {
             res.clearCookie('refreshToken', { httpOnly: true });
             res.clearCookie('accessToken', { httpOnly: true }).status(200).json({ message: "Successfully logged out" });
         } catch (e) {
-            res.status(500);
+            res.status(404);
         }
     }
     async addUser(req, res) {
@@ -56,7 +56,7 @@ class UsersController {
             await Users.create(user);
             res.json({ message: 'Пользователь успешно добавлен' });
         } catch (e) {
-            res.status(500).json(e);
+            res.status(404).json(e);
         }
     }
     async login(req, res) {
@@ -82,7 +82,7 @@ class UsersController {
                 res.status(400).json({ message: 'Такого пользователя не существует' });
             }
         } catch (e) {
-            res.status(500).json(e);
+            res.status(404).json(e);
         }
     }
     async userData(req, res) {
@@ -99,7 +99,7 @@ class UsersController {
                 res.json(userData);
             }
         } catch (e) {
-            res.status(500).json(e);
+            res.status(404).json(e);
         }
     }
 }
