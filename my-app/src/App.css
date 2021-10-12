@@ -404,8 +404,14 @@ a.selected {
   padding-top: 44px;
   margin-bottom: 40px;
 }
-.blogContentText{
+.blogContentText {
   font-size: 17px;
   line-height: 1.7;
   margin-bottom: 30px;
+}
+.homeIMG {
+  object-fit: cover;
+  max-width: 500px;
+  max-height: 400px;
+  margin-bottom: 50px;
 }
