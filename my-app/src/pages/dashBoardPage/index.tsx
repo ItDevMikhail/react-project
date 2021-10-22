@@ -1,83 +1,61 @@
-import { useState, useEffect } from 'react';
-import { IBookListProps } from '../../models/iBooks';
-import { useHttp } from '../../hooks/http.hook';
-import UserFavoriteComponent from '../../commponents/userFavorite';
-import UserDataComponent from '../../commponents/userData';
-import { IUserProps } from './../../models/iUser';
-import { CircularProgress } from '@material-ui/core';
-
-
+import { useEffect } from "react";
+import { useHttp } from "../../hooks/http.hook";
+import UserFavoriteComponent from "../../commponents/userFavorite";
+import UserDataComponent from "../../commponents/userData";
+import { CircularProgress } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserData } from "../../redux/actions/actionsUser";
+import { fetchgetFavorites } from "../../redux/actions/actionsFavorite";
 
 export default function DashBoardPage() {
-    const [favorite, setFavorite] = useState<Array<object>>([{}]);
-    const [user, setUser] = useState<IUserProps>();
-    const { request, error } = useHttp();
-    const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const loading = useSelector((state: any) => state.user.loading);
+  const userData = useSelector((state: any) => state.user.data);
 
-    useEffect(() => {
-        const favor = sessionStorage.getItem('favoriteDashboard');
-        if (favor) {
-            setFavorite(JSON.parse(favor));
-        }
-        getUser();
-        getFavorite();
-        return () => { setFavorite(favorite) };
-    }, []);
+  const { request } = useHttp();
 
-    const getUser = async () => {
-        setLoading(true);
-        try {
-            const data = await request('/api/users/user', 'GET');
-            if (data) {
-                setUser(data);
-            }
-            setLoading(false);
-            return data;
-        } catch (e: any) {
-            setLoading(false);
-            console.log(error);
-        }
+  useEffect(() => {
+    if (!userData.name) {
+      dispatch(fetchUserData(request));
     }
+    dispatch(fetchgetFavorites(request));
+    // return () => {
+    // };
+  }, []);
 
-    const getFavorite = async () => {
-        try {
-            const data = await request('/api/library/dashboard', 'GET');
-            if (data) {
-                setFavorite(data);
-                sessionStorage.setItem('favoriteDashboard', JSON.stringify(data));
-            } else {
-                setFavorite([{}]);
-                sessionStorage.removeItem('favoriteDashboard');
-            }
-            return data;
-        } catch (e: any) {
-            console.log(error);
-        }
-    }
-
-    return (
-        <div className="dashboard">
-            <h1>Dashboard</h1>
-            <div className="container">
-                <div className="dashboardTop">
-                    <div className="dashboardTopBlock">
-                        <p><strong>My data</strong></p>
-                        <div className={loading ? 'dashboardProgressBar active' : 'dashboardProgressBar'}>
-                            <CircularProgress />
-                        </div>
-                        <UserDataComponent userData={user} />
-                    </div>
-                    <div className="dashboardTopBlock">
-                        <p><strong>My Favorite Books</strong></p>
-                        <UserFavoriteComponent favoriteBooks={favorite} />
-                    </div>
-                    <div className="dashboardTopBlock">
-                        <p><strong>Others</strong></p>
-                        <p>Пока ничего не придумал</p>
-                        <p>Два блока как-то мало было</p>
-                    </div>
-                </div>
+  return (
+    <div className="dashboard">
+      <h1>Dashboard</h1>
+      <div className="container">
+        <div className="dashboardTop">
+          <div className="dashboardTopBlock">
+            <p>
+              <strong>My data</strong>
+            </p>
+            <div
+              className={
+                loading ? "dashboardProgressBar active" : "dashboardProgressBar"
+              }
+            >
+              <CircularProgress />
             </div>
+            <UserDataComponent />
+          </div>
+          <div className="dashboardTopBlock">
+            <p>
+              <strong>My Favorite Books</strong>
+            </p>
+            <UserFavoriteComponent />
+          </div>
+          <div className="dashboardTopBlock">
+            <p>
+              <strong>Others</strong>
+            </p>
+            <p>Пока ничего не придумал</p>
+            <p>Два блока как-то мало было</p>
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  );
 }
