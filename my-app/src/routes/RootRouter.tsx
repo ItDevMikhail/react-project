@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { LOGIN_ROUTE } from "../models/const";
+import { HOMEPAGE_ROUTE } from "../models/const";
 import { adminRoutes, publicRoutes, privateRoutes } from "./routes";
 import { useSelector } from "react-redux";
 
@@ -20,7 +20,7 @@ function AppRouter() {
       {publicRoutes.map(({ path, Component }) => (
         <Route key={path} path={path} component={Component} exact />
       ))}
-      <Redirect to={LOGIN_ROUTE} />
+      <Redirect to={HOMEPAGE_ROUTE} />
     </Switch>
   );
 }

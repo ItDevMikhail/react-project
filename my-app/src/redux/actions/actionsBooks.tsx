@@ -1,4 +1,4 @@
-import { FETCHED_BOOKS, FETCHED_BOOKS_ERROR, FETCHING_BOOKS } from "../types";
+import { FETCHED_BOOKS, FETCHED_BOOKS_ERROR, FETCHING_BOOKS, WATCHER_GET_BOOKS, WATCHER_DELETE_BOOKS } from "../types";
 
 export function fetchingBooks() {
   return {
@@ -17,43 +17,16 @@ export function fetchedBooksError(error: string) {
     payload: error,
   };
 }
-export function fetchBooks(request: any) {
-  return async (dispatch: any) => {
-    try {
-      dispatch(fetchingBooks());
-      const data = await request("/api/library", "GET");
-      if (data) {
-        dispatch(fetchedBooks(data));
-      } else {
-        dispatch(
-          fetchedBooks([
-            {
-              _id: "",
-              name: "Библиотека книг пуста",
-              description: "",
-              picture: "",
-            },
-          ])
-        );
-      }
-    } catch (error) {
-      dispatch(fetchedBooksError("Ошибка загрузки данных"));
-    }
-  };
+
+export function fetchBooks() {
+  return {
+    type: WATCHER_GET_BOOKS
+  }
 }
-export function fetchdeleteBooks(request: any, bookId: string) {
-  return async (dispatch: any) => {
-    try {
-      const data = await request(
-        "/api/library",
-        "DELETE",
-        JSON.stringify({ bookId: bookId })
-      );
-      if (data) {
-        dispatch(fetchBooks(request));
-      }
-    } catch (error) {
-      dispatch(fetchedBooksError("Ошибка загрузки данных"));
-    }
-  };
+
+export function fetchdeleteBooks(bookId: string) {
+  return {
+    type: WATCHER_DELETE_BOOKS,
+    bookId: bookId
+  }
 }

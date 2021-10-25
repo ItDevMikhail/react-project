@@ -34,7 +34,7 @@ export default function BooksListComponent({ todos }: IBooksList) {
   };
   const handleAcceptClose = () => {
     setOpen(false);
-    dispatch(fetchdeleteBooks(request, delBookId));
+    dispatch(fetchdeleteBooks(delBookId));
   };
   const addFavorite = (itemId: string) => {
     dispatch(fetchaddFavorites(request, itemId));
@@ -55,8 +55,8 @@ export default function BooksListComponent({ todos }: IBooksList) {
   return (
     <>
       <ul>
-        {todos.map((item: IBookListPropsItem) => (
-          <li key={item._id}>
+        {todos && todos.map((item: IBookListPropsItem, index) => (
+          <li key={index.toString()}>
             <Link to={`/library/detail/${item._id}`}>{item.name}</Link>
             <div className={checkFavorite(item._id) ? "addedFavorite" : ""}>
               <span

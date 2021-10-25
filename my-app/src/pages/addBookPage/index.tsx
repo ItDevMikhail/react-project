@@ -1,9 +1,8 @@
-import React, { useState, useEffect, HTMLInputTypeAttribute } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IAddBookProps } from '../../models/iAddbook';
 import { Button, Input, InputLabel, FormGroup, Card, CardHeader, TextField } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 import { useHttp } from '../../hooks/http.hook';
-import MessageBoxComponent from '../../commponents/messageBox';
 
 export default function AddBookPage() {
     type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
@@ -15,7 +14,7 @@ export default function AddBookPage() {
     const [files, setFiles] = useState<any>();
     const [filesError, setFilesError] = useState<boolean>(false);
     let history = useHistory();
-    const {request, error} = useHttp();
+    const { request } = useHttp();
 
     const addBookHandler = async () => {
         const formData = new FormData();
@@ -41,7 +40,6 @@ export default function AddBookPage() {
             console.log(error);
         }
     }
-
     const addPicture = (event: any) => {
         let target = event.target || event.scrElement;
         console.log(target.files);
@@ -52,7 +50,7 @@ export default function AddBookPage() {
                 setFilesError(true);
                 setFiles(target.files);
             }
-        } else{
+        } else {
             setFilesError(false);
             setFiles('');
         }
@@ -82,29 +80,8 @@ export default function AddBookPage() {
             setDescrError(false);
         }
     }
-    // const addBookHandler = async () => {
-    //     try {
-    //         const response = await fetch('/api/library/add', {
-    //             method: 'POST',
-    //             body: JSON.stringify(book),
-    //             headers: {
-    //                 'Content-type': 'application/json'
-    //             }
-    //         })
-    //         const data = await response.json();
-    //         if (!response.ok) {
-    //             throw new Error(data.message || 'чёт не то');
-    //         }
-    //         if (data) {
-    //             history.push(`/library/detail/${data._id}`);
-    //         }
-    //     } catch (e: any) {
-    //         console.log(e.message);
-    //     }
-    // }
     return (
         <>
-        <MessageBoxComponent mess={error}/>
             <Card className="loginCard">
                 <CardHeader title="Добавить книгу" className="loginCardHeader"></CardHeader>
                 <form className="loginForm">
@@ -136,7 +113,7 @@ export default function AddBookPage() {
                     </FormGroup>
                     <br />
                     <label className="uploadLabel" htmlFor="uploadPicture">Добавить фото книги</label> {files && <span>{files[0].name}</span>}
-                    {filesError && <span style={{color: 'red'}}>Проверьте формат файла</span>}
+                    {filesError && <span style={{ color: 'red' }}>Проверьте формат файла</span>}
                     <input type="file" name="photo" id="uploadPicture" accept=".jpg, .jpeg, .png" onChange={($event) => addPicture($event)} />
                     <br />
                     <Button color="primary" variant="contained" disabled={!formValid} onClick={addBookHandler}>Создать</Button>

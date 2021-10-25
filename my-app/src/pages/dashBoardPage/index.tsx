@@ -11,16 +11,17 @@ export default function DashBoardPage() {
   const dispatch = useDispatch();
   const loading = useSelector((state: any) => state.user.loading);
   const userData = useSelector((state: any) => state.user.data);
+  const state = useSelector((state: any) => state);
 
   const { request } = useHttp();
 
   useEffect(() => {
     if (!userData.name) {
-      dispatch(fetchUserData(request));
+      dispatch(fetchUserData());
     }
     dispatch(fetchgetFavorites(request));
-    // return () => {
-    // };
+    console.log(state);
+    return () => { };
   }, []);
 
   return (

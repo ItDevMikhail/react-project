@@ -4,6 +4,8 @@ import {
   FETCHED_USER_DATA,
   FETCHING_USER_DATA,
   FETCHED_USER_DATA_ERROR,
+  WATCHER_GET_USER_DATA,
+  WATCHER_CHECK_AUTH,
 } from "../types";
 
 export function isAuthorization(auth: boolean) {
@@ -36,28 +38,13 @@ export function fetchedUserDataError(error: string) {
   };
 }
 
-export function fetchUserData(request: any) {
-  return async (dispatch: any) => {
-    try {
-      dispatch(fetchingUserData());
-      const data = await request("/api/users/user", "GET");
-      dispatch(fetchedUserData(data));
-    } catch (error) {
-      dispatch(fetchedUserDataError("Ошибка загрузки данных"));
-    }
-  };
+export function fetchUserData() {
+  return {
+    type: WATCHER_GET_USER_DATA
+  }
 }
-export function fetchisAuthorization(requestAuth: any) {
-  return async (dispatch: any) => {
-    try {
-      const data = await requestAuth();
-      if (data) {
-        dispatch(isAuthorization(true));
-      } else {
-        dispatch(isAuthorization(false));
-      }
-    } catch (error) {
-      dispatch(fetchedUserDataError("Ошибка загрузки данных"));
-    }
-  };
+export function fetchisAuthorization() {
+  return {
+    type: WATCHER_CHECK_AUTH
+  }
 }

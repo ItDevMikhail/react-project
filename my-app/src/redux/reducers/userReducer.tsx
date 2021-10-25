@@ -7,7 +7,7 @@ import {
 } from "../types";
 
 const initialState = {
-  isAuth: false,
+  isAuth: true,
   token: null,
   loading: false,
   data: [],

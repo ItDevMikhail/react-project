@@ -17,9 +17,9 @@ export default function LibraryPage() {
 
   useEffect(() => {
     dispatch(fetchgetLibFavorites(request));
-    dispatch(fetchBooks(request));
-    // return () => {
-    // };
+    // dispatch(fetchBooks(request));
+    dispatch(fetchBooks());
+    return () => { };
   }, []);
 
   const onFilterChanged = (val: string) => {
@@ -29,8 +29,8 @@ export default function LibraryPage() {
   let filtredTodos =
     filter.length > 0
       ? books.filter((book: IBookListPropsItem) =>
-          book.name.toUpperCase().includes(filter.toUpperCase())
-        )
+        book.name.toUpperCase().includes(filter.toUpperCase())
+      )
       : books;
 
   return (

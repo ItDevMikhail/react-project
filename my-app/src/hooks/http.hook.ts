@@ -1,8 +1,10 @@
 import { useState, useCallback } from "react";
+import { useDispatch } from 'react-redux';
+import { errorMessage } from './../redux/actions/actionsFetch';
 
 export const useHttp = () => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState('');
+    const dispatch = useDispatch();
 
     const request = useCallback(async (url: string, method: string = 'GET', body = null, headers = { 'Content-Type': 'application/json', credentials: 'include' }) => {
         setLoading(true);
@@ -30,12 +32,10 @@ export const useHttp = () => {
 
         } catch (e: any) {
             setLoading(false);
-            setError(e.message);
-            console.log(e.message, 'e.messsss');
-            setTimeout(() => clearError(), 2000);
+            dispatch(errorMessage(e.message));
+            setTimeout(() => dispatch(errorMessage('')), 2000);
         }
     }, []);
-    const clearError = () => setError('');
 
-    return { loading, request, error };
+    return { loading, request };
 }

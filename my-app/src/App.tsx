@@ -1,51 +1,21 @@
-import { useState, useEffect } from "react";
 import "./App.css";
-import { BrowserRouter as Router, NavLink } from "react-router-dom";
-import { useHttp } from "./hooks/http.hook";
-import { useHttpAuth } from "./hooks/http.auth.hook";
-import { Tooltip, Zoom } from "@material-ui/core";
+import { BrowserRouter as Router } from "react-router-dom";
 import AppRouter from "./routes/RootRouter";
-import { Provider, useDispatch } from "react-redux";
-import store from "./redux/store";
+import { Provider } from "react-redux";
 import Header from "./commponents/header";
-import { isAuthorization } from "./redux/actions/actionsUser";
+import { createStore, applyMiddleware, compose } from "redux";
+import { rootReducer } from './redux/reducers/rootReducer';
+import thunk from "redux-thunk";
+import { watchBooks } from "./redux/sagas";
+import createSagaMiddleware from 'redux-saga';
 
 function App() {
-  // const { request, error } = useHttp();
-  // const { requestAuth } = useHttpAuth();
 
-  // const dispatch = useDispatch();
+  const sagaMiddleware = createSagaMiddleware();
 
-  // const logout = async () => {
-  //   // setIsLogged(false);
-  //   try {
-  //     const data = await request("/api/users/logout", "GET");
-  //     if (data) {
-  //       sessionStorage.clear();
-  //     }
-  //   } catch (e) {
-  //     console.log(error);
-  //   }
-  // };
-  // const checkauth = async () => {
-  //   try {
-  //     const data = await requestAuth();
-  //     if (data) {
-  //       dispatch(isAuthorization(true));
-  //     } else {
-  //       // setIsLogged(false);
-  //       dispatch(isAuthorization(false));
-  //     }
-  //   } catch (error) {
-  //     // setIsLogged(false);
-  //     console.log(error);
-  //   }
-  // };
+  const store = createStore(rootReducer, compose(applyMiddleware(thunk, sagaMiddleware)));
 
-  // useEffect(() => {
-  //   // dispatch(fetchisAuthorization(requestAuth));
-  //   // checkauth();
-  // }, []);
+  sagaMiddleware.run(watchBooks);
 
   return (
     <Provider store={store}>

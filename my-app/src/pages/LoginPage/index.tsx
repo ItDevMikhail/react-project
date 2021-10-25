@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import { useHttp } from "../../hooks/http.hook";
 import { useHistory } from "react-router-dom";
-import MessageBoxComponent from "./../../commponents/messageBox/index";
 import { useDispatch } from "react-redux";
 import { isAuthorization } from "../../redux/actions/actionsUser";
 
@@ -33,7 +32,7 @@ export default function LoginPage({ logged }: loggedProps) {
   const [passwordError, setPasswordError] = useState<string>("введите пароль");
   const [formValid, setFormValid] = useState<boolean>(false);
 
-  const { loading, error, request } = useHttp();
+  const { loading, request } = useHttp();
   let history = useHistory();
 
   useEffect(() => {
@@ -74,22 +73,16 @@ export default function LoginPage({ logged }: loggedProps) {
   };
 
   const authHandler = async () => {
-    try {
-      const body = JSON.stringify({ login: login, password: password });
-      const data = await request("/api/users/login", "POST", body);
-      console.log(error);
-      if (data) {
-        dispatch(isAuthorization(true));
-        history.push("/library");
-      }
-    } catch (e) {
-      console.log(error);
+    const body = JSON.stringify({ login: login, password: password });
+    const data = await request("/api/users/login", "POST", body);
+    if (data) {
+      dispatch(isAuthorization(true));
+      history.push("/library");
     }
   };
 
   return (
     <>
-      <MessageBoxComponent mess={error} />
       <Card className="loginCard">
         <CardHeader
           title="Авторизация"

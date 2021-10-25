@@ -2,22 +2,17 @@ import { Tooltip, Zoom } from "@material-ui/core";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchisAuthorization,
-  isAuthorization,
-} from "../../redux/actions/actionsUser";
+import { fetchisAuthorization, isAuthorization } from "../../redux/actions/actionsUser";
 import { useHttp } from "../../hooks/http.hook";
-import { useHttpAuth } from "../../hooks/http.auth.hook";
+import MessageBoxComponent from "../messageBox";
 
 export default function Header() {
   const dispatch = useDispatch();
   const isAuth = useSelector((state: any) => state.user.isAuth);
-  const state = useSelector((state: any) => state);
   const { request } = useHttp();
-  const { requestAuth } = useHttpAuth();
 
   useEffect(() => {
-    dispatch(fetchisAuthorization(requestAuth));
+    dispatch(fetchisAuthorization());
     console.log(isAuth);
   }, []);
 
@@ -115,6 +110,7 @@ export default function Header() {
           </nav>
         )}
       </div>
+      <MessageBoxComponent />
     </div>
   );
 }

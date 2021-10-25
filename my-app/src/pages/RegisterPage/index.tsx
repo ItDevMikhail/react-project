@@ -9,13 +9,12 @@ import {
 } from "@material-ui/core";
 import { useHttp } from "../../hooks/http.hook";
 // import { useHistory } from "react-router-dom";
-import MessageBoxComponent from "./../../commponents/messageBox/index";
 
 export default function RegisterPage() {
   type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   type focusTarget = React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>;
 
-  const { loading, error, request } = useHttp();
+  const { loading, request } = useHttp();
 
   const [login, setLogin] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -157,27 +156,22 @@ export default function RegisterPage() {
   };
 
   const registerHandler = async () => {
-    try {
-      const body = JSON.stringify({
-        login: login,
-        name: name,
-        lastName: lastName,
-        email: email,
-        password: password,
-      });
-      const data = await request("/api/users/reg", "POST", body);
-      console.log("data", data);
-      if (data) {
-        // history.push("/login");
-      }
-    } catch (e) {
-      console.log(error);
+    const body = JSON.stringify({
+      login: login,
+      name: name,
+      lastName: lastName,
+      email: email,
+      password: password,
+    });
+    const data = await request("/api/users/reg", "POST", body);
+    console.log("data", data);
+    if (data) {
+      // history.push("/login");
     }
   };
 
   return (
     <>
-      <MessageBoxComponent mess={error} />
       <Card className="registerCard">
         <CardHeader
           title="Регистрация"

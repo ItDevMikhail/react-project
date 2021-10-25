@@ -1,14 +1,15 @@
-interface MessProps {
-  mess: string;
-}
+import { useSelector } from 'react-redux';
 
-export default function MessageBoxComponent({ mess }: MessProps) {
+export default function MessageBoxComponent() {
+  const errorMessage = useSelector((state: any) => state.fetch.error);
+
+
   return (
     <>
-      {mess && (
+      {errorMessage && (
         <div className="messageBox">
           <div className="messageTitle">Сообщение</div>
-          <div className="messageText">ошибка:{mess}</div>
+          <div className="messageText">ошибка:{errorMessage}</div>
         </div>
       )}
     </>

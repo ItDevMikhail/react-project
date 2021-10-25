@@ -73,15 +73,3 @@ export function fetchgetLibFavorites(request: any) {
     }
   };
 }
-//   const getFavorite = async () => {
-//     try {
-//       const data = await request("/api/library/favorite", "GET");
-//       if (data) {
-//         setFavorite(data);
-//         sessionStorage.setItem("favorite", JSON.stringify(data));
-//       }
-//       return data;
-//     } catch (e: any) {
-//       console.log(error);
-//     }
-//   };
