@@ -5,7 +5,7 @@ interface ISearchInputProps {
     onFilterChanged: (val: string) => void
 }
 
-export default function BooksListComponent({ onFilterChanged }: ISearchInputProps) {
+export default function SearchInputComponent({ onFilterChanged }: ISearchInputProps) {
     type target = React.ChangeEvent<HTMLInputElement>;
     const [timeoutId, setTimeoutId] = useState<number>(0);
 

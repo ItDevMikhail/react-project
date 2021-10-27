@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { CircularProgress } from "@material-ui/core";
-import Fancybox from "../../commponents/galleryPopup";
+import FancyBox from "../../commponents/galleryPopup";
 import { IBookListPropsItem } from "./../../models/iBooks";
 
 export default function BookDetailPage() {
@@ -53,7 +53,8 @@ export default function BookDetailPage() {
             <strong>Описание книги:</strong> {todos.description}
           </p>
           {todos.picture && (
-            <Fancybox>
+            // <FancyBox>
+            <>
               <p>
                 <strong>Обложка книги:</strong>
               </p>
@@ -68,7 +69,8 @@ export default function BookDetailPage() {
                   src={`http://localhost:5000/${todos.picture}`}
                 />
               </a>
-            </Fancybox>
+            </>
+            //  </FancyBox> 
           )}
         </div>
       </div>

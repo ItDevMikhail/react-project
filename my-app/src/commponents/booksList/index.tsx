@@ -56,8 +56,8 @@ export default function BooksListComponent({ todos }: IBooksList) {
     <>
       <ul>
         {todos && todos.map((item: IBookListPropsItem, index) => (
-          <li key={index.toString()}>
-            <Link to={`/library/detail/${item._id}`}>{item.name}</Link>
+          <li key={index.toString()} data-testid="bookListItem">
+            <Link data-testid={item._id} to={`/library/detail/${item._id}`}>{item.name}</Link>
             <div className={checkFavorite(item._id) ? "addedFavorite" : ""}>
               <span
                 className="material-icons starIcon"
@@ -66,6 +66,7 @@ export default function BooksListComponent({ todos }: IBooksList) {
                 star
               </span>
               <span
+                data-testid={`deleteIcon${item._id}`}
                 className="material-icons deleteIcon"
                 onClick={() => handleModalOpen(item._id)}
               >
@@ -84,10 +85,10 @@ export default function BooksListComponent({ todos }: IBooksList) {
           Вы точно хотите удалить эту книгу?
         </DialogTitle>
         <DialogActions>
-          <Button onClick={handleDeclineClose} id="cancelBtn">
+          <Button data-testid='cancelBtn' onClick={handleDeclineClose} id="cancelBtn">
             Отмена
           </Button>
-          <Button onClick={handleAcceptClose} id="acceptBtn">
+          <Button data-testid='acceptBtn' onClick={handleAcceptClose} id="acceptBtn">
             Удалить
           </Button>
         </DialogActions>

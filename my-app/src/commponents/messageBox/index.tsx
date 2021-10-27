@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 export default function MessageBoxComponent() {
   const errorMessage = useSelector((state: any) => state.fetch.error);
 
-
   return (
     <>
       {errorMessage && (

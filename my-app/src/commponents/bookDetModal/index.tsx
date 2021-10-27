@@ -16,14 +16,14 @@ export default function BookDetModalComponent({
   return (
     <>
       {open && (
-        <div className="bookDetModal" onClick={() => changeHandler(index)}>
+        <div data-testid="element" className="bookDetModal" onClick={() => changeHandler(index)}>
           <div className="bookDetModalContent">
             <div className="modalClose"></div>
             <p>
-              <strong>Название книги:</strong> {favoriteBooks[index].name}
+              <strong>Название книги:</strong>{favoriteBooks[index].name}
             </p>
             <p className="descriptionText">
-              <strong>Описание книги:</strong>{" "}
+              <strong>Описание книги:</strong>
               {favoriteBooks[index].description}
             </p>
             {favoriteBooks[index].picture && (
