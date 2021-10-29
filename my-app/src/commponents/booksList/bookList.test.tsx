@@ -22,7 +22,7 @@ const LocationDisplay = withRouter(({ location }) => (
 const store = createStore(rootReducer);
 const renderWithRedux = (wrapper: any) => {
     return {
-        ...render(<Provider store={store}><MemoryRouter><BlogPostComponent todos={todos} /><LocationDisplay /></MemoryRouter></Provider>), wrapper
+        ...render(<Provider store={store}><MemoryRouter><BlogPostComponent todos={todos} /><LocationDisplay /></MemoryRouter></Provider>, wrapper)
     };
 };
 

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { IBookListProps, IBookListPropsItem } from "../../models/iBooks";
 import { CircularProgress } from "@material-ui/core";
-import { useHttp } from "../../hooks/http.hook";
 import SearchInputComponent from "../../commponents/searchInput";
 import BooksListComponent from "../../commponents/booksList";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,15 +8,13 @@ import { fetchBooks } from "../../redux/actions/actionsBooks";
 import { fetchgetLibFavorites } from "../../redux/actions/actionsFavorite";
 
 export default function LibraryPage() {
-  const { request } = useHttp();
   const [filter, setFilter] = useState<string>("");
   const dispatch = useDispatch();
   const books = useSelector((state: IBookListProps) => state.books.data);
   const loading = useSelector((state: any) => state.books.loading);
 
   useEffect(() => {
-    dispatch(fetchgetLibFavorites(request));
-    // dispatch(fetchBooks(request));
+    dispatch(fetchgetLibFavorites());
     dispatch(fetchBooks());
     return () => { };
   }, []);

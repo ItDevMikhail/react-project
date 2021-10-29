@@ -37,7 +37,7 @@ export default function BooksListComponent({ todos }: IBooksList) {
     dispatch(fetchdeleteBooks(delBookId));
   };
   const addFavorite = (itemId: string) => {
-    dispatch(fetchaddFavorites(request, itemId));
+    dispatch(fetchaddFavorites(itemId));
   };
   const checkFavorite = (itemId: string) => {
     if (favorites.length) {

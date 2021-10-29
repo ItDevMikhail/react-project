@@ -12,7 +12,7 @@ const renderWithRedux = (
     { initialState, store = createStore(rootReducer, initialState) }: any = {}
 ) => {
     return {
-        ...render(<Provider store={store}><UserDataComponent /></Provider>), store
+        ...render(<Provider store={store}><UserDataComponent /></Provider>, wrapper), store
     };
 };
 

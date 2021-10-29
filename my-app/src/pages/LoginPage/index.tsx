@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Input,
-  InputLabel,
-  FormGroup,
-  Card,
-  CardHeader,
-} from "@material-ui/core";
+import { Button, Input, InputLabel, FormGroup, Card, CardHeader } from "@material-ui/core";
 import { useHttp } from "../../hooks/http.hook";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { isAuthorization } from "../../redux/actions/actionsUser";
 
-interface loggedProps {
-  logged: (val: boolean) => void;
-}
 
-export default function LoginPage({ logged }: loggedProps) {
+export default function LoginPage() {
   const dispatch = useDispatch();
 
   type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
@@ -126,7 +116,6 @@ export default function LoginPage({ logged }: loggedProps) {
           <Button
             color="primary"
             variant="contained"
-            type="submit"
             disabled={!formValid || loading}
             onClick={authHandler}
           >

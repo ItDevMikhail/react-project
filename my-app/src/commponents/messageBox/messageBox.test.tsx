@@ -11,7 +11,7 @@ const renderWithRedux = (
     { initialState, store = createStore(rootReducer, initialState) }: any = {}
 ) => {
     return {
-        ...render(<Provider store={store}><MessageBoxComponent /></Provider>), store
+        ...render(<Provider store={store}><MessageBoxComponent /></Provider>, wrapper), store
     };
 };
 

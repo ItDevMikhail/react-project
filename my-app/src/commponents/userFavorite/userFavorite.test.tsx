@@ -3,16 +3,6 @@ import UserFavoriteComponent from './index';
 import userEvent from '@testing-library/user-event';
 import { unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
-// jest.mock('./../bookDetModal/index', () => {
-//     return function DummyBookDetModalComponent(props: any) {
-//         return (
-//             <div data-testid="bookDetModal">
-//                 {props.favoriteBooks}:{props.index}:{props.changeHandler}:{props.open}
-//             </div>
-//         );
-//     };
-// });
-// import BookDetModalComponent from './../bookDetModal/index';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { rootReducer } from '../../redux/reducers/rootReducer';
@@ -24,7 +14,7 @@ const renderWithRedux = (
     { initialState, store = createStore(rootReducer, initialState) }: any = {}
 ) => {
     return {
-        ...render(<Provider store={store}><MemoryRouter><UserFavoriteComponent /></MemoryRouter></Provider>), store
+        ...render(<Provider store={store}><MemoryRouter><UserFavoriteComponent /></MemoryRouter></Provider>, wrapper), store
     };
 };
 

@@ -25,7 +25,6 @@ const renderWithRouter = (
         history = createMemoryHistory({ initialEntries: ['/'] })
     } = {},
 ) => {
-
     const Wrapper = ({ children }: any) => (
         <Router history={history}>{children}</Router>
     );

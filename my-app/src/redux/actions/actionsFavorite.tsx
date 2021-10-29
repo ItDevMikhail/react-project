@@ -4,6 +4,7 @@ import {
   FETCHED_FAVORITE_ERROR,
   FETCHING_FAVORITE,
 } from "../types";
+import { FetchApi } from "../../services/fetch.services";
 
 export function fetchingFavorites() {
   return {
@@ -28,11 +29,11 @@ export function fetchedFavoritesError(error: string) {
     payload: error,
   };
 }
-export function fetchgetFavorites(request: any) {
+export function fetchgetFavorites() {
   return async (dispatch: any) => {
     try {
       dispatch(fetchingFavorites());
-      const data = await request("/api/library/dashboard", "GET");
+      const data = await FetchApi("/api/library/dashboard", "GET");
       if (data) {
         dispatch(fetchedDashFavorites(data));
       } else {
@@ -43,11 +44,11 @@ export function fetchgetFavorites(request: any) {
     }
   };
 }
-export function fetchaddFavorites(request: any, bookId: string) {
+export function fetchaddFavorites(bookId: string) {
   return async (dispatch: any) => {
     try {
       dispatch(fetchingFavorites());
-      const data = await request(`/api/library/addFavorite/${bookId}`, "GET");
+      const data = await FetchApi(`/api/library/addFavorite/${bookId}`, "GET");
       if (data) {
         dispatch(fetchedLibFavorites(data));
       } else {
@@ -58,11 +59,11 @@ export function fetchaddFavorites(request: any, bookId: string) {
     }
   };
 }
-export function fetchgetLibFavorites(request: any) {
+export function fetchgetLibFavorites() {
   return async (dispatch: any) => {
     try {
       dispatch(fetchingFavorites());
-      const data = await request("/api/library/favorite", "GET");
+      const data = await FetchApi("/api/library/favorite", "GET");
       if (data) {
         dispatch(fetchedLibFavorites(data));
       } else {

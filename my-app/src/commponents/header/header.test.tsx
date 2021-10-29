@@ -25,7 +25,7 @@ const renderWithRedux = (
     { initialState, store = createStore(rootReducer, initialState) }: any = {}
 ) => {
     return {
-        ...render(<Provider store={store}><MemoryRouter><Header /><LocationDisplay /></MemoryRouter></Provider>), store
+        ...render(<Provider store={store}><MemoryRouter><Header /><LocationDisplay /></MemoryRouter></Provider>, wrapper), store
     };
 };
 

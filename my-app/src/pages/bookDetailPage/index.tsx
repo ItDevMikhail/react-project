@@ -3,6 +3,8 @@ import { useLocation } from "react-router";
 import { CircularProgress } from "@material-ui/core";
 import FancyBox from "../../commponents/galleryPopup";
 import { IBookListPropsItem } from "./../../models/iBooks";
+import { useHttp } from "../../hooks/http.hook";
+import { FetchApi } from "../../services/fetch.services";
 
 export default function BookDetailPage() {
   const [todos, setTodos] = useState<IBookListPropsItem>({
@@ -11,29 +13,19 @@ export default function BookDetailPage() {
     description: "",
   });
   const location = useLocation();
-  const [loading, setLoading] = useState<boolean>(false);
+  const { request, loading } = useHttp();
 
   const getBook = async () => {
     try {
-      setLoading(true);
-      const response = await fetch(`/api${location.pathname}`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "чёт не то");
-      }
-      setLoading(false);
+      const data = await FetchApi(`/api${location.pathname}`, 'GET');
       if (data) setTodos(data);
       return data;
     } catch (e: any) {
-      setLoading(false);
       console.log(e.message);
     }
   };
 
   useEffect(() => {
-    console.log(location.pathname);
     getBook();
     return () => {
       setTodos(todos);

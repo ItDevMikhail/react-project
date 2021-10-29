@@ -36,8 +36,8 @@ export default function AddBookPage() {
             if (data) {
                 history.push(`/library/detail/${data._id}`);
             }
-        } catch (error) {
-            console.log(error);
+        } catch (error: unknown) {
+            error instanceof Error && console.log(error.message);
         }
     }
     const addPicture = (event: any) => {
@@ -45,6 +45,7 @@ export default function AddBookPage() {
         console.log(target.files);
         if (target.files.length > 0) {
             if (target.files[0].type.includes('image')) {
+                setFilesError(false);
                 setFiles(target.files);
             } else {
                 setFilesError(true);

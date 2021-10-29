@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useHttp } from "../../hooks/http.hook";
 import UserFavoriteComponent from "../../commponents/userFavorite";
 import UserDataComponent from "../../commponents/userData";
 import { CircularProgress } from "@material-ui/core";
@@ -11,16 +10,13 @@ export default function DashBoardPage() {
   const dispatch = useDispatch();
   const loading = useSelector((state: any) => state.user.loading);
   const userData = useSelector((state: any) => state.user.data);
-  const state = useSelector((state: any) => state);
 
-  const { request } = useHttp();
 
   useEffect(() => {
     if (!userData.name) {
       dispatch(fetchUserData());
     }
-    dispatch(fetchgetFavorites(request));
-    console.log(state);
+    dispatch(fetchgetFavorites());
     return () => { };
   }, []);
 

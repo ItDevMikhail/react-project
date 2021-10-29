@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 
-describe('SeartchInputComponent', () => {
+describe('SearchInputComponent', () => {
     const fn = (val: any) => val.trim();
     let wrapper: any = null;
     beforeEach(() => {

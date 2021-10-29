@@ -48,9 +48,6 @@ function* CheckIsAuthorization(): any {
         }
     } catch (error: any) {
         yield put(isAuthorization(false));
-        yield put(errorMessage(error.message));
-        yield new Promise(res => setTimeout(res, 3000));
-        yield put(errorMessage(''));
     };
 }
 
