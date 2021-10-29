@@ -42,6 +42,7 @@ function* CheckIsAuthorization(): any {
     try {
         const data = yield call(CheckAuth);
         if (data) {
+            yield put(fetchingUserData());
             yield put(isAuthorization(true));
         } else {
             yield put(isAuthorization(false));

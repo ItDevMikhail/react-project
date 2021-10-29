@@ -17,7 +17,7 @@ const initialState = {
 export const userReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case ISAUTHORIZATION:
-      return { ...state, isAuth: action.payload };
+      return { ...state, isAuth: action.payload, loading: false };
     case TOKEN:
       return { ...state, token: action.payload };
     case FETCHING_USER_DATA:

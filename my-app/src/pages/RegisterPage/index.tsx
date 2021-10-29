@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { useHttp } from "../../hooks/http.hook";
 // import { useHistory } from "react-router-dom";
+import axios from 'axios';
 
 export default function RegisterPage() {
   type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
@@ -156,18 +157,33 @@ export default function RegisterPage() {
   };
 
   const registerHandler = async () => {
-    const body = JSON.stringify({
+    const body = {
       login: login,
       name: name,
       lastName: lastName,
       email: email,
       password: password,
-    });
-    const data = await request("/api/users/reg", "POST", body);
-    console.log("data", data);
-    if (data) {
-      // history.push("/login");
+    };
+    try {
+      const data = await axios.post('api/users/reg', body);
+      console.log("data axios", data.data);
+      // if (data) {
+      //   // history.push("/login");
+      // }
+    } catch (e: unknown) {
+      e instanceof Error && console.log(e.message);
     }
+    // const body = JSON.stringify({
+    //   login: login,
+    //   name: name,
+    //   lastName: lastName,
+    //   email: email,
+    //   password: password,
+    // });
+    // const data = await request("/api/users/reg", "POST", body);
+    // if (data) {
+    //   // history.push("/login");
+    // }
   };
 
   return (
@@ -287,7 +303,6 @@ export default function RegisterPage() {
           <Button
             color="primary"
             variant="contained"
-            type="submit"
             disabled={!formValid || loading}
             onClick={registerHandler}
           >
