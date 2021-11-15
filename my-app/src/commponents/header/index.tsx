@@ -1,8 +1,8 @@
-import { Tooltip, Zoom } from "@material-ui/core";
+import { CircularProgress, Tooltip, Zoom } from "@material-ui/core";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchingUserData, fetchisAuthorization, isAuthorization } from "../../redux/actions/actionsUser";
+import { fetchingUserData, fetchisAuthorization, isAuthorization, userLogout } from "../../redux/actions/actionsUser";
 import { useHttp } from "../../hooks/http.hook";
 import MessageBoxComponent from "../messageBox";
 import { ADD_BOOK_ROUTE, BLOG_ROUTE, DASHBOARD_ROUTE, HOMEPAGE_ROUTE, LIBRARY_ROUTE, LOGIN_ROUTE, LOGOUT_ROUTE, REGISTRATION_ROUTE } from "../../models/const";
@@ -13,13 +13,8 @@ export default function Header() {
   const loading = useSelector((state: any) => state.user.loading);
   const { request } = useHttp();
 
-  useEffect(() => {
-    dispatch(fetchingUserData());
-    dispatch(fetchisAuthorization());
-    console.log(isAuth);
-  }, []);
-
   const logout = async () => {
+    dispatch(userLogout());
     dispatch(isAuthorization(false));
     await request("/api/users/logout", "GET");
   };
@@ -28,17 +23,7 @@ export default function Header() {
       <div className="header">
         <div className="container">
           <nav className="navMenu">
-            <div className="navMenuleft">
-              <Tooltip
-                title="Home"
-                placement="bottom-start"
-                TransitionComponent={Zoom}
-              >
-                <NavLink activeClassName="selected" to={HOMEPAGE_ROUTE} exact={true}>
-                  <span className="material-icons">home</span>
-                </NavLink>
-              </Tooltip>
-            </div>
+            <CircularProgress className="headerProgressBar" />
           </nav>
         </div>
       </div>

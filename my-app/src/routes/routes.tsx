@@ -3,7 +3,7 @@ import {
   LOGOUT_ROUTE, REGISTRATION_ROUTE,
   BLOG_ROUTE, HOMEPAGE_ROUTE,
   LIBRARY_ROUTE, ADD_BOOK_ROUTE,
-  DASHBOARD_ROUTE, DETAIL_ROUTE,
+  DASHBOARD_ROUTE, DETAIL_ROUTE, ERROR_ROUTE,
 } from "../models/const";
 import AddBookPage from "../pages/addBookPage";
 import BlogPage from "../pages/blogPage";
@@ -61,5 +61,9 @@ export const publicRoutes = [
   {
     path: HOMEPAGE_ROUTE,
     Component: HomePage,
+  },
+  {
+    path: ERROR_ROUTE,
+    Component: ErrorPage,
   },
 ];

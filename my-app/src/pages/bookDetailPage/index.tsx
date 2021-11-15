@@ -45,24 +45,24 @@ export default function BookDetailPage() {
             <strong>Описание книги:</strong> {todos.description}
           </p>
           {todos.picture && (
-            // <FancyBox>
-            <>
-              <p>
-                <strong>Обложка книги:</strong>
-              </p>
-              <a
-                data-fancybox="gallery"
-                className="detailBigImg"
-                href={`http://localhost:5000/${todos.picture}`}
-              >
-                <img
-                  alt="images"
-                  className="detailImg"
-                  src={`http://localhost:5000/${todos.picture}`}
-                />
-              </a>
-            </>
-            //  </FancyBox> 
+            <FancyBox>
+              <>
+                <p>
+                  <strong>Обложка книги:</strong>
+                </p>
+                <a
+                  data-fancybox="gallery"
+                  className="detailBigImg"
+                  href={`http://localhost:5000/${todos.picture}`}
+                >
+                  <img
+                    alt="images"
+                    className="detailImg"
+                    src={`http://localhost:5000/${todos.picture}`}
+                  />
+                </a>
+              </>
+            </FancyBox>
           )}
         </div>
       </div>

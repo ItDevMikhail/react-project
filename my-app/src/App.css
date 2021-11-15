@@ -1,3 +1,4 @@
+@import "~react-big-calendar/lib/css/react-big-calendar.css";
 a {
   color: #fff;
   text-decoration: none;
@@ -414,4 +415,20 @@ a.selected {
   max-width: 500px;
   max-height: 400px;
   margin-bottom: 50px;
+}
+.headerProgressBar {
+  margin: 10px auto 0;
+}
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dataTime {
+  font-weight: 700;
+  text-align: center;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-bottom: none;
 }

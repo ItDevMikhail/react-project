@@ -15,7 +15,7 @@ const initialState = {
 export const favoriteReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case FETCHING_FAVORITE:
-      return { ...state, loading: action.payload };
+      return { ...state, loading: true };
     case FETCHED_DASHBOARD_FAVORITE:
       return { ...state, loading: false, dataUser: action.payload };
     case FETCHED_LIBRARY_FAVORITE:

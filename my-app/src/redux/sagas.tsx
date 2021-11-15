@@ -52,13 +52,12 @@ function* CheckIsAuthorization(): any {
     };
 }
 
-function* DeleteBook(bookId: any): any {
+function* DeleteBook(actionData: any): any {
     try {
-        console.log(bookId, 'boooooooooooooooooookId')
         const data = yield call(FetchApi,
             "/api/library",
             "DELETE",
-            JSON.stringify({ bookId: bookId.bookId })
+            JSON.stringify({ bookId: actionData.bookId })
         );
         if (data) {
             yield put(fetchBooks());

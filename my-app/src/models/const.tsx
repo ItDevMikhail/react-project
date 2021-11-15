@@ -8,3 +8,4 @@ export const LIBRARY_ROUTE = "/library";
 export const ADD_BOOK_ROUTE = "/library/add";
 export const DASHBOARD_ROUTE = "/user/dashboard";
 export const DETAIL_ROUTE = "/library/detail";
+export const ERROR_ROUTE = "/error";

@@ -9,7 +9,11 @@ const initialState = {
 export const booksReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case FETCHING_BOOKS:
-      return { ...state, loading: action.payload };
+      if (state.data.length < 2) {
+        return { ...state, loading: true }
+      } else {
+        return state
+      };
     case FETCHED_BOOKS:
       return { ...state, loading: false, data: action.payload };
     case FETCHED_BOOKS_ERROR:

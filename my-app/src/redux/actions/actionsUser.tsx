@@ -48,3 +48,8 @@ export function fetchisAuthorization() {
     type: WATCHER_CHECK_AUTH
   }
 }
+export function userLogout() {
+  return {
+    type: 'USER_LOGOUT'
+  }
+}
