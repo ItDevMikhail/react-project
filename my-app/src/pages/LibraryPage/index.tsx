@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
-import { IBookListProps, IBookListPropsItem } from "../../models/iBooks";
+import { IBookListPropsItem } from "../../models/iBooks";
 import { CircularProgress } from "@material-ui/core";
 import SearchInputComponent from "../../commponents/searchInput";
 import BooksListComponent from "../../commponents/booksList";
-import { useSelector, useDispatch } from "react-redux";
 import { fetchBooks } from "../../redux/actions/actionsBooks";
 import { fetchgetLibFavorites } from "../../redux/actions/actionsFavorite";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useTranslation } from "react-i18next";
 
 export default function LibraryPage() {
   const [filter, setFilter] = useState<string>("");
-  const dispatch = useDispatch();
-  const books = useSelector((state: IBookListProps) => state.books.data);
-  const loading = useSelector((state: any) => state.books.loading);
+  const dispatch = useAppDispatch();
+  const books = useAppSelector((state) => state.books.data);
+  const loading = useAppSelector((state) => state.books.loading);
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(fetchgetLibFavorites());
@@ -33,7 +35,7 @@ export default function LibraryPage() {
   return (
     <>
       <div className="container libraryPage">
-        <h2>Library page</h2>
+        <h2>{t("Library.LibraryPage")}</h2>
         <SearchInputComponent onFilterChanged={onFilterChanged} />
         <br />
         <br />

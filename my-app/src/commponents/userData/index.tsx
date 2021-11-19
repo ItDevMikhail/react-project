@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
 
 export default function UserDataComponent() {
-  const userData = useSelector((state: any) => state.user.data);
+  const userData = useAppSelector(state => state.user.data);
 
   return (
     <>

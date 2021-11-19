@@ -1,6 +1,7 @@
 import BookDetModalComponent from "./../bookDetModal/index";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import {
   IFavoritesBooksProps,
   IFavoritesBooksPropsItem,
@@ -10,6 +11,8 @@ export default function UserFavoriteComponent() {
   const favoriteBooks = useSelector(
     (state: IFavoritesBooksProps) => state.favorite.dataUser
   );
+
+  const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState<number>(0);
@@ -39,7 +42,7 @@ export default function UserFavoriteComponent() {
           )}
         </ul>
       )}
-      {!favoriteBooks[0].name && <p>У вас нет избранных книг</p>}
+      {!favoriteBooks[0].name && <p>{t("Dashboard.NoFavorite")}</p>}
       <div>
         <BookDetModalComponent
           favoriteBooks={favoriteBooks}

@@ -1,73 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import { Button, Input, InputLabel, FormGroup, Card, CardHeader } from "@material-ui/core";
-import { useHttp } from "../../hooks/http.hook";
+import { useREST } from "../../hooks/useREST";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { isAuthorization } from "../../redux/actions/actionsUser";
+import { useLoginForm } from "../../hooks/useLoginForm";
 
 
 export default function LoginPage() {
   const dispatch = useDispatch();
 
-  type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
-  type focusTarget = React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>;
+  const { state, changeLogin, changePassword, cleanUp, setModel, validate, getFieldError } = useLoginForm();
 
-  const [login, setLogin] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-
-  const [loginWrong, setLoginWrong] = useState<boolean>(false);
-  const [loginError, setLoginError] = useState<string>("введите логин");
-
-  const [passwordWrong, setPasswordWrong] = useState<boolean>(false);
-  const [passwordError, setPasswordError] = useState<string>("введите пароль");
-  const [formValid, setFormValid] = useState<boolean>(false);
-
-  const { loading, request } = useHttp();
+  const { loading, request } = useREST();
   let history = useHistory();
 
-  useEffect(() => {
-    if (loginError || passwordError) {
-      setFormValid(false);
-    } else {
-      setFormValid(true);
-    }
-  }, [loginError, passwordError]);
 
-  const loginHandler = (e: changeTarget) => {
-    setLogin(e.target.value);
-    if (!e.target.value) {
-      setLoginError("введите логин");
-    } else {
-      setLoginError("");
-    }
-  };
-  const passwordHandler = (e: changeTarget) => {
-    setPassword(e.target.value);
-    if (!e.target.value) {
-      setPasswordError("введите пароль");
-    } else {
-      setPasswordError("");
-    }
-  };
-  const focusHandler = (e: focusTarget) => {
-    switch (e.target.name) {
-      case "login":
-        setLoginWrong(true);
-        break;
-      case "password":
-        setPasswordWrong(true);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const authHandler = async () => {
-    const body = JSON.stringify({ login: login, password: password });
-    const data = await request("/api/users/login", "POST", body);
-    if (data) {
-      dispatch(isAuthorization(true));
-      history.push("/library");
+  const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (validate(state)) {
+      const body = JSON.stringify({ login: state.login, password: state.password });
+      const data = await request("/api/users/login", "POST", body);
+      if (data) {
+        cleanUp()
+        dispatch(isAuthorization(true));
+        history.push("/library");
+      }
     }
   };
 
@@ -78,21 +36,20 @@ export default function LoginPage() {
           title="Авторизация"
           className="loginCardHeader"
         ></CardHeader>
-        <form className="loginForm">
+        <form className="loginForm" onSubmit={handleSubmit}>
           <FormGroup>
             <InputLabel htmlFor="login">Логин*</InputLabel>
             <Input
               id="login"
-              onFocus={(e) => focusHandler(e)}
               type="text"
               name="login"
               placeholder="Введите логин"
-              onChange={(e) => loginHandler(e)}
-              value={login}
+              onChange={changeLogin}
+              value={state.login}
               required
             />
-            {loginWrong && loginError && (
-              <div className="regErrors">{loginError}</div>
+            {getFieldError('login') && (
+              <div className="regErrors">{getFieldError('login')}</div>
             )}
           </FormGroup>
           <br />
@@ -101,23 +58,22 @@ export default function LoginPage() {
             <Input
               id="password"
               type="password"
-              onFocus={(e) => focusHandler(e)}
               placeholder="Введите пароль"
               name="password"
-              onChange={(e) => passwordHandler(e)}
-              value={password}
+              onChange={changePassword}
+              value={state.password}
               required
             />
-            {passwordWrong && passwordError && (
-              <div className="regErrors">{passwordError}</div>
+            {getFieldError('password') && (
+              <div className="regErrors">{getFieldError('password')}</div>
             )}
           </FormGroup>
           <br />
           <Button
             color="primary"
             variant="contained"
-            disabled={!formValid || loading}
-            onClick={authHandler}
+            disabled={loading}
+            type="submit"
           >
             Войти
           </Button>

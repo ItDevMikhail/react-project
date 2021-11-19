@@ -19,9 +19,12 @@ export async function FetchApi(url: string, method: string = 'GET', body: string
             throw new Error(data.message || 'Ошибка, запрос не был выполнен');
         }
         return data;
-    } catch (e: any) {
-        console.log(e, 'eerr');
-        throw new Error(e.message || 'Ошибка, запрос не был выполнен');
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            throw new Error(e.message || 'Ошибка, запрос не был выполнен');
+        } else {
+            console.log(e);
+        }
     }
 }
 
@@ -40,7 +43,11 @@ export async function CheckAuth(url: string = '/api/users/auth', method: string 
 
         }
         return data;
-    } catch (e: any) {
-        throw new Error(e.message || 'Сервер не отвечает, попробуйте повторить позже.');
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            throw new Error(e.message || 'Сервер не отвечает, попробуйте повторить позже.');
+        } else {
+            console.log(e);
+        }
     }
 };

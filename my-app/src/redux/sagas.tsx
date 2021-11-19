@@ -12,10 +12,10 @@ export function* watchBooks() {
     yield takeEvery(WATCHER_DELETE_BOOKS, DeleteBook);
 }
 
-function* GetBooks(): any {
+function* GetBooks() {
     try {
         yield put(fetchingBooks());
-        const data = yield call(FetchApi, "/api/library", "GET");
+        const data: Promise<any> = yield call(FetchApi, "/api/library", "GET");
         if (data) {
             yield put(fetchedBooks(data))
         } else {
@@ -23,13 +23,15 @@ function* GetBooks(): any {
             );
         }
     }
-    catch (error: any) {
-        yield put(errorMessage(error.message));
+    catch (error: unknown) {
+        if (error instanceof Error) {
+            yield put(errorMessage(error.message));
+        }
         yield new Promise(res => setTimeout(res, 3000));
         yield put(errorMessage(''));
     }
 };
-function* GetUserData(): any {
+function* GetUserData(): unknown {
     try {
         yield put(fetchingUserData());
         const data = yield call(FetchApi, "/api/users/user", "GET");
@@ -38,7 +40,7 @@ function* GetUserData(): any {
         yield put(fetchedUserDataError("Ошибка загрузки данных"));
     }
 };
-function* CheckIsAuthorization(): any {
+function* CheckIsAuthorization(): unknown {
     try {
         const data = yield call(CheckAuth);
         if (data) {
@@ -47,12 +49,12 @@ function* CheckIsAuthorization(): any {
         } else {
             yield put(isAuthorization(false));
         }
-    } catch (error: any) {
+    } catch (error) {
         yield put(isAuthorization(false));
     };
 }
 
-function* DeleteBook(actionData: any): any {
+function* DeleteBook(actionData: { type: string, bookId: string }): unknown {
     try {
         const data = yield call(FetchApi,
             "/api/library",

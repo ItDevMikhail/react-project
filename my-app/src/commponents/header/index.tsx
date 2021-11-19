@@ -1,19 +1,29 @@
-import { CircularProgress, Tooltip, Zoom } from "@material-ui/core";
-import { useEffect } from "react";
+import { CircularProgress, Tooltip, Zoom, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchingUserData, fetchisAuthorization, isAuthorization, userLogout } from "../../redux/actions/actionsUser";
-import { useHttp } from "../../hooks/http.hook";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { isAuthorization, userLogout } from "../../redux/actions/actionsUser";
+import { useREST } from "../../hooks/useREST";
 import MessageBoxComponent from "../messageBox";
 import { ADD_BOOK_ROUTE, BLOG_ROUTE, DASHBOARD_ROUTE, HOMEPAGE_ROUTE, LIBRARY_ROUTE, LOGIN_ROUTE, LOGOUT_ROUTE, REGISTRATION_ROUTE } from "../../models/const";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
-  const dispatch = useDispatch();
-  const isAuth = useSelector((state: any) => state.user.isAuth);
-  const loading = useSelector((state: any) => state.user.loading);
-  const { request } = useHttp();
+  const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(state => state.user.isAuth);
+  const loading = useAppSelector(state => state.user.loading);
 
-  const logout = async () => {
+  const { request } = useREST();
+
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (language: string) => {
+    i18n.changeLanguage(language);
+  };
+  let home = t("Header.Home");
+  let logout = t("Header.Logout");
+  let login = t("Header.Login");
+  let register = t("Header.Registration");
+  const logoutHandler = async () => {
     dispatch(userLogout());
     dispatch(isAuthorization(false));
     await request("/api/users/logout", "GET");
@@ -36,7 +46,7 @@ export default function Header() {
             <nav className="navMenu">
               <div className="navMenuleft">
                 <Tooltip
-                  title="Home"
+                  title={home}
                   placement="bottom-start"
                   TransitionComponent={Zoom}
                 >
@@ -45,36 +55,46 @@ export default function Header() {
                   </NavLink>
                 </Tooltip>
                 <NavLink activeClassName="selected" to={LIBRARY_ROUTE} exact={true}>
-                  Library
+                  {t("Header.Library")}
                 </NavLink>
                 <NavLink
                   activeClassName="selected"
                   to={ADD_BOOK_ROUTE}
                   exact={true}
                 >
-                  Add book
+                  {t("Header.AddBook")}
                 </NavLink>
                 <NavLink activeClassName="selected" to={BLOG_ROUTE} exact={true}>
-                  Blog
+                  {t("Header.Blog")}
                 </NavLink>
                 <NavLink
                   activeClassName="selected"
                   to={DASHBOARD_ROUTE}
                   exact={true}
                 >
-                  Dashboard
+                  {t("Header.Dashboard")}
                 </NavLink>
               </div>
               <div className="navMenuRight">
+                <FormControl fullWidth>
+                  <Select
+                    defaultValue={t("Language")}
+                    className="headerSelect"
+                    onChange={(e: any) => changeLanguage(e.target.value)}
+                  >
+                    <MenuItem value="ru">RU</MenuItem>
+                    <MenuItem value="en">EN</MenuItem>
+                  </Select>
+                </FormControl>
                 <Tooltip
-                  title="logout"
+                  title={logout}
                   placement="bottom-start"
                   TransitionComponent={Zoom}
                 >
                   <NavLink
                     activeClassName="selected"
                     to={LOGOUT_ROUTE}
-                    onClick={logout}
+                    onClick={logoutHandler}
                   >
                     <span className="material-icons">logout</span>
                   </NavLink>
@@ -86,7 +106,7 @@ export default function Header() {
             <nav className="navMenu">
               <div className="navMenuleft">
                 <Tooltip
-                  title="Home"
+                  title={home}
                   placement="bottom-start"
                   TransitionComponent={Zoom}
                 >
@@ -96,8 +116,18 @@ export default function Header() {
                 </Tooltip>
               </div>
               <div className="navMenuRight">
+                <FormControl fullWidth>
+                  <Select
+                    defaultValue={t("Language")}
+                    className="headerSelect"
+                    onChange={(e: any) => changeLanguage(e.target.value)}
+                  >
+                    <MenuItem value="ru">RU</MenuItem>
+                    <MenuItem value="en">EN</MenuItem>
+                  </Select>
+                </FormControl>
                 <Tooltip
-                  title="login"
+                  title={login}
                   placement="bottom-start"
                   TransitionComponent={Zoom}
                 >
@@ -106,7 +136,7 @@ export default function Header() {
                   </NavLink>
                 </Tooltip>
                 <Tooltip
-                  title="Registration"
+                  title={register}
                   placement="bottom-start"
                   TransitionComponent={Zoom}
                 >

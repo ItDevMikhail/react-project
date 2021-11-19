@@ -3,8 +3,8 @@ import { useLocation } from "react-router";
 import { CircularProgress } from "@material-ui/core";
 import FancyBox from "../../commponents/galleryPopup";
 import { IBookListPropsItem } from "./../../models/iBooks";
-import { useHttp } from "../../hooks/http.hook";
-import { FetchApi } from "../../services/fetch.services";
+import { useREST } from "../../hooks/useREST";
+import { useTranslation } from "react-i18next";
 
 export default function BookDetailPage() {
   const [todos, setTodos] = useState<IBookListPropsItem>({
@@ -13,11 +13,13 @@ export default function BookDetailPage() {
     description: "",
   });
   const location = useLocation();
-  const { request, loading } = useHttp();
+  const { request, loading } = useREST();
+
+  const { t } = useTranslation();
 
   const getBook = async () => {
     try {
-      const data = await FetchApi(`/api${location.pathname}`, 'GET');
+      const data = await request(`/api${location.pathname}`, 'GET');
       if (data) setTodos(data);
       return data;
     } catch (e: any) {
@@ -35,20 +37,20 @@ export default function BookDetailPage() {
   return (
     <>
       <div className="container detailPage">
-        <h2>Book page</h2>
+        <h2>{t("Detail.BookPage")}</h2>
         <div className={loading ? "progressBar active" : "progressBar"}>
           <CircularProgress />
         </div>
         <div className={!loading ? "active" : "hidden"}>
-          <h3>Название книги: {todos.name}</h3>
+          <h3>{t("Detail.BookName")}: {todos.name}</h3>
           <p className="descriptionText">
-            <strong>Описание книги:</strong> {todos.description}
+            <strong>{t("Detail.Description")}:</strong> {todos.description}
           </p>
           {todos.picture && (
             <FancyBox>
               <>
                 <p>
-                  <strong>Обложка книги:</strong>
+                  <strong>{t("Detail.BookCover")}:</strong>
                 </p>
                 <a
                   data-fancybox="gallery"

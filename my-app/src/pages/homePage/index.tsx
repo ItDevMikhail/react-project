@@ -1,21 +1,28 @@
-import home from '../../img/home.jpg';
-import Calendar from '../../commponents/calendar';
-import DataTime from '../../commponents/dateTime';
 
+import home from '../../img/home.jpg';
+import Canvas from '../../commponents/canvas';
+import CalendarTime from '../../commponents/CalendarTime';
+import { useTranslation } from "react-i18next";
 
 export default function HomePage() {
-    return (
+    const { t, i18n } = useTranslation();
+    const changeLanguage = (language: string) => {
+        i18n.changeLanguage(language);
+    };
 
-        <div className="container flex">
-            <div className="homeWrapper">
-                <h2>Home page</h2>
-                <h3>Здесь пока ничего нет кроме "Home"</h3>
-                <img className="homeIMG" src={home} alt="images" />
+    return (
+        <>
+            <div className="container flex">
+                <div className="homeWrapper">
+                    <h2>{t("Home.HomePage")}</h2>
+                    <h3>{t("Home.StabHome")}</h3>
+                    <img className="homeIMG" src={home} alt="images" />
+                </div>
+                <CalendarTime />
             </div>
-            <div className="dataWrapper">
-                <DataTime />
-                <Calendar />
-            </div>
-        </div>
+            <button onClick={() => changeLanguage("ru")}>ru</button>
+            <button onClick={() => changeLanguage("en")}>en</button>
+            <Canvas />
+        </>
     )
 }

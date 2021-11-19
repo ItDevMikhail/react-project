@@ -1,5 +1,7 @@
+import { useAppSelector } from "../../redux/hooks";
 
-export default function ErrorPage({ errorMess }: any) {
+export default function ErrorPage() {
+    const errorMess: string | null = useAppSelector(state => state.fetch.error)
     const error = errorMess || '500 Server Error'
     return (
         <>

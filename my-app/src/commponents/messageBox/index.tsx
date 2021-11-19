@@ -1,7 +1,7 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from "../../redux/hooks";
 
 export default function MessageBoxComponent() {
-  const errorMessage = useSelector((state: any) => state.fetch.error);
+  const errorMessage = useAppSelector(state => state.fetch.error);
 
   return (
     <>

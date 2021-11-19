@@ -28,6 +28,7 @@ ul {
 .navMenuRight {
   height: 100%;
   display: flex;
+  align-items: center;
 }
 .navMenuleft a,
 .navMenuRight a {
@@ -45,7 +46,26 @@ a.selected {
   border-bottom: 3px solid #61dafb;
   color: #61dafb;
 }
-
+.headerSelect.MuiInputBase-root {
+  color: #fff;
+}
+.headerSelect svg {
+  fill: #fff;
+}
+#select-label {
+  color: #fff;
+}
+.headerSelect.MuiInput-underline:after,
+.headerSelect.MuiInput-underline:before {
+  border-bottom: 1px solid #fff;
+}
+.headerSelect.MuiInput-underline:hover:not(.Mui-disabled):before {
+  border-bottom: 1px solid #61dafb;
+}
+.MuiMenu-list .MuiListItem-gutters {
+  padding: 0;
+  justify-content: center;
+}
 .registerForm,
 .loginForm {
   display: flex;
@@ -430,5 +450,5 @@ a.selected {
   padding: 10px;
   background-color: #fff;
   border: 1px solid #eee;
-  border-bottom: none;
+  margin-bottom: 10px;
 }

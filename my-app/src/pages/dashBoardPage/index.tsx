@@ -2,15 +2,17 @@ import { useEffect } from "react";
 import UserFavoriteComponent from "../../commponents/userFavorite";
 import UserDataComponent from "../../commponents/userData";
 import { CircularProgress } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { fetchUserData } from "../../redux/actions/actionsUser";
 import { fetchgetFavorites } from "../../redux/actions/actionsFavorite";
+import { useTranslation } from "react-i18next";
 
 export default function DashBoardPage() {
-  const dispatch = useDispatch();
-  const loading = useSelector((state: any) => state.user.loading);
-  const userData = useSelector((state: any) => state.user.data);
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector((state) => state.user.loading);
+  const userData = useAppSelector((state) => state.user.data);
 
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!userData.name) {
@@ -22,12 +24,12 @@ export default function DashBoardPage() {
 
   return (
     <div className="dashboard">
-      <h1>Dashboard</h1>
+      <h1>{t("Dashboard.Dashboard")}</h1>
       <div className="container">
         <div className="dashboardTop">
           <div className="dashboardTopBlock">
             <p>
-              <strong>My data</strong>
+              <strong>{t("Dashboard.Data")}</strong>
             </p>
             <div
               className={
@@ -40,16 +42,16 @@ export default function DashBoardPage() {
           </div>
           <div className="dashboardTopBlock">
             <p>
-              <strong>My Favorite Books</strong>
+              <strong>{t("Dashboard.Favorite")}</strong>
             </p>
             <UserFavoriteComponent />
           </div>
           <div className="dashboardTopBlock">
             <p>
-              <strong>Others</strong>
+              <strong>{t("Dashboard.Others")}</strong>
             </p>
-            <p>Пока ничего не придумал</p>
-            <p>Два блока как-то мало было</p>
+            <p>{t("Dashboard.Stab1")}</p>
+            <p>{t("Dashboard.Stab2")}</p>
           </div>
         </div>
       </div>

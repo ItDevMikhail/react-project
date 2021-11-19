@@ -8,7 +8,8 @@ import { Dialog, DialogActions, DialogTitle, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchaddFavorites } from "../../redux/actions/actionsFavorite";
 import { fetchdeleteBooks } from "../../redux/actions/actionsBooks";
-import { useHttp } from "./../../hooks/http.hook";
+import { useREST } from "../../hooks/useREST";
+import { useTranslation } from "react-i18next";
 
 interface IBooksList {
   todos: IBookListPropsItem[];
@@ -17,12 +18,13 @@ interface IBooksList {
 export default function BooksListComponent({ todos }: IBooksList) {
   const [open, setOpen] = useState(false);
   const [delBookId, setDelBookId] = useState<string>("");
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const favorites = useSelector(
     (state: IFavoritesBooksLibProps) => state.favorite.dataLib
   );
-  const { request } = useHttp();
+  const { request } = useREST();
 
   const handleModalOpen = (itemId: string) => {
     setOpen(true);
@@ -82,14 +84,14 @@ export default function BooksListComponent({ todos }: IBooksList) {
         aria-labelledby="alert-dialog-title"
       >
         <DialogTitle id="alert-dialog-title">
-          Вы точно хотите удалить эту книгу?
+          {t("Library.DialogTitle")}
         </DialogTitle>
         <DialogActions>
           <Button data-testid='cancelBtn' onClick={handleDeclineClose} id="cancelBtn">
-            Отмена
+            {t("Library.CancelBtn")}
           </Button>
           <Button data-testid='acceptBtn' onClick={handleAcceptClose} id="acceptBtn">
-            Удалить
+            {t("Library.DeleteBtn")}
           </Button>
         </DialogActions>
       </Dialog>

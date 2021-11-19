@@ -1,0 +1,50 @@
+{
+  "Language": "ru",
+  "Header": {
+    "Home": "Главная",
+    "Library": "Библиотека",
+    "AddBook": "Добавить книгу",
+    "Blog": "Блог",
+    "Dashboard": "Ваш профиль",
+    "Logout": "Выйти",
+    "Login": "Войти",
+    "Registration": "Регистрация"
+  },
+  "Home": {
+    "HomePage": "Главная страница",
+    "StabHome": "Здесь пока ничего нет кроме \"Дома\""
+  },
+  "Library": {
+    "LibraryPage": "Страница библиотеки",
+    "SearchInpitPlaceholder": "Введите текст",
+    "ClearBtn": "Очистить",
+    "DialogTitle": "Вы точно хотите удалить эту книгу?",
+    "CancelBtn": "Отмена",
+    "DeleteBtn": "Удалить"
+  },
+  "AddBook": {
+    "AddBook": "Добавить книгу",
+    "BookName": "Название книги",
+    "BookNamePlaceholder": "Введите название книги",
+    "Description": "Описание",
+    "DescriptionPlaceholder": "Напишите описание книги",
+    "AddPhoto": "Добавить фото книги",
+    "Add": "Добавить"
+  },
+  "Dashboard": {
+    "Dashboard": "Ваш профиль",
+    "Data": "Данные",
+    "Favorite": "Избранные книги",
+    "Others": "Прочее",
+    "Stab1": "Пока ничего не придумал",
+    "Stab2": "Два блока как-то мало было",
+    "NoFavorite": "У вас нет избранных книг"
+  },
+  "Detail": {
+    "BookPage": "Страница книги",
+    "BookName": "Название книги",
+    "Description": "Описание книги",
+    "BookCover": "Обложка книги",
+    "GoTo": "Перейти на страницу книги"
+  }
+}

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface IUserFavoriteProps {
   favoriteBooks: Array<any>;
@@ -13,6 +14,9 @@ export default function BookDetModalComponent({
   changeHandler,
   open,
 }: IUserFavoriteProps) {
+
+  const { t } = useTranslation();
+
   return (
     <>
       {open && (
@@ -20,16 +24,16 @@ export default function BookDetModalComponent({
           <div className="bookDetModalContent">
             <div className="modalClose"></div>
             <p>
-              <strong>Название книги:</strong>{favoriteBooks[index].name}
+              <strong>{t("Detail.BookName")}: </strong>{favoriteBooks[index].name}
             </p>
             <p className="descriptionText">
-              <strong>Описание книги:</strong>
+              <strong>{t("Detail.Description")}: </strong>
               {favoriteBooks[index].description}
             </p>
             {favoriteBooks[index].picture && (
               <div>
                 <p>
-                  <strong>Обложка книги:</strong>
+                  <strong>{t("Detail.BookCover")}:</strong>
                 </p>
                 <img
                   alt="images"
@@ -42,7 +46,7 @@ export default function BookDetModalComponent({
               className="bookDetModalLink"
               to={`/library/detail/${favoriteBooks[index]._id}`}
             >
-              Перейти на страницу книги
+              {t("Detail.GoTo")}
             </Link>
           </div>
         </div>

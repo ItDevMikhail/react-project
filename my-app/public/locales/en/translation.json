@@ -1,0 +1,50 @@
+{
+  "Language": "en",
+  "Header": {
+    "Home": "Home",
+    "Library": "Library",
+    "AddBook": "Add book",
+    "Blog": "Blog",
+    "Dashboard": "Dashboard",
+    "Logout": "Logout",
+    "Login": "Login",
+    "Registration": "Registration"
+  },
+  "Home": {
+    "HomePage": "Home page",
+    "StabHome": "There is nothing here yet but \"Home\""
+  },
+  "Library": {
+    "LibraryPage": "Library page",
+    "SearchInpitPlaceholder": "Enter text",
+    "ClearBtn": "Clear",
+    "DialogTitle": "Are you sure you want to delete this book?",
+    "CancelBtn": "Cancel",
+    "DeleteBtn": "Delete"
+  },
+  "AddBook": {
+    "AddBook": "Add Book",
+    "BookName": "Book name",
+    "BookNamePlaceholder": "Enter a book name",
+    "Description": "Description",
+    "DescriptionPlaceholder": "Enter a book description",
+    "AddPhoto": "Add a book photo",
+    "Add": "Add"
+  },
+  "Dashboard": {
+    "Dashboard": "Dashboard",
+    "Data": "Data",
+    "Favorite": "Favorite Books",
+    "Others": "Others",
+    "Stab1": "I haven't come up with anything yet",
+    "Stab2": "Two blocks is not enough",
+    "NoFavorite": "You don't have bookmark"
+  },
+  "Detail": {
+    "BookPage": "Book page",
+    "BookName": "Book name",
+    "Description": "Book description",
+    "BookCover": "Book cover",
+    "GoTo": "Go to book page"
+  }
+}

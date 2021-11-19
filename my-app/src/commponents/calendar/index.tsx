@@ -2,15 +2,22 @@ import React, { useState } from 'react'
 import './index.css'
 import { startOfMonth, addDays, startOfWeek, format, endOfMonth, endOfWeek, isSameMonth, isSameDay, addMonths, subMonths, parse } from 'date-fns';
 import { ru } from 'date-fns/locale';
+import { Tooltip, Zoom } from "@material-ui/core";
 
 export default function Calendar() {
     const [currentMonth, setCurrentMonth] = useState(new Date())
     const [selectedDate, setSelectedDate] = useState(new Date())
+
+    const Today = () => {
+        setCurrentMonth(new Date());
+        setSelectedDate(new Date());
+        renderHeader();
+        renderDays();
+        renderCells();
+    }
     const renderHeader = () => {
         const dateFormat = "LLLL yyyy";
         let data = format(currentMonth, dateFormat, { locale: ru })
-
-
         return (
             <div className="calendarHeader row flex-middle">
                 <div className="col col-start" onClick={prevMonth}>
@@ -18,9 +25,15 @@ export default function Calendar() {
                         chevron_left
                     </div>
                 </div>
-                <div className="col col-center">
-                    <span>{data}</span>
-                </div>
+                <Tooltip
+                    title="Вернуться к сегодня"
+                    placement="bottom"
+                    TransitionComponent={Zoom}
+                >
+                    <div className="col col-center" onClick={Today} style={{ cursor: 'pointer' }}>
+                        <span>{data}</span>
+                    </div>
+                </Tooltip>
                 <div className="col col-end" onClick={nextMonth}>
                     <div className="icon">chevron_right</div>
                 </div>

@@ -1,111 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SyntheticEvent } from 'react';
 import { IAddBookProps } from '../../models/iAddbook';
 import { Button, Input, InputLabel, FormGroup, Card, CardHeader, TextField } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
-import { useHttp } from '../../hooks/http.hook';
+import { useREST } from '../../hooks/useREST';
+import { useAddBookForm } from '../../hooks/useAddBookForm'
+import { useTranslation } from "react-i18next";
 
 export default function AddBookPage() {
-    type changeTarget = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+    const { state, changeName, changeDescription, changeFiles, getFieldError, cleanUp, validate } = useAddBookForm();
 
-    const [book, setBooks] = useState<IAddBookProps>({ name: '', description: '' });
-    const [nameError, setNameError] = useState<boolean>(true);
-    const [descrError, setDescrError] = useState<boolean>(true);
-    const [formValid, setFormValid] = useState<boolean>(false);
-    const [files, setFiles] = useState<any>();
-    const [filesError, setFilesError] = useState<boolean>(false);
+    const { t } = useTranslation();
+
     let history = useHistory();
-    const { request } = useHttp();
 
-    const addBookHandler = async () => {
-        const formData = new FormData();
-        formData.append('book', JSON.stringify(book));
-        if (files) {
-            formData.append('picture', files[0]);
-        } else {
-        }
-        try {
+    const { request, loading } = useREST();
+
+    const addBookHandler = async (e: SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (validate(state)) {
+            const formData = new FormData();
+            formData.append('book', JSON.stringify({ name: state.name, description: state.description }));
+            if (state.picture) {
+                formData.append('picture', state.picture[0]);
+            }
             const data = await request('/api/library/add', 'POST', formData, {});
-            // const response = await fetch('/api/library/add', {
-            //     method: 'POST',
-            //     body: formData,
-            // })
-            // const data = await response.json();
-            // if (!response.ok) {
-            //     throw new Error(data.message || 'чёт не то');
-            // }
             if (data) {
+                cleanUp()
                 history.push(`/library/detail/${data._id}`);
             }
-        } catch (error: unknown) {
-            error instanceof Error && console.log(error.message);
-        }
-    }
-    const addPicture = (event: any) => {
-        let target = event.target || event.scrElement;
-        console.log(target.files);
-        if (target.files.length > 0) {
-            if (target.files[0].type.includes('image')) {
-                setFilesError(false);
-                setFiles(target.files);
-            } else {
-                setFilesError(true);
-                setFiles(target.files);
-            }
-        } else {
-            setFilesError(false);
-            setFiles('');
-        }
-    }
-
-    useEffect(() => {
-        if (nameError || descrError || filesError) {
-            setFormValid(false)
-        } else {
-            setFormValid(true)
-        }
-    }, [nameError, descrError, filesError])
-
-    const nameHandler = (e: changeTarget) => {
-        setBooks({ name: e.target.value, description: book.description });
-        if (e.target.value.length < 3) {
-            setNameError(true);
-        } else {
-            setNameError(false);
-        }
-    }
-    const descriptionHandler = (e: changeTarget) => {
-        setBooks({ name: book.name, description: e.target.value });
-        if (e.target.value.length < 5) {
-            setDescrError(true);
-        } else {
-            setDescrError(false);
         }
     }
     return (
         <>
             <Card className="loginCard">
-                <CardHeader title="Добавить книгу" className="loginCardHeader"></CardHeader>
-                <form className="loginForm">
-                    <FormGroup className={nameError ? 'addBookInput' : ''}>
-                        <InputLabel htmlFor="login">Название книги*</InputLabel>
+                <CardHeader title={t("AddBook.AddBook")} className="loginCardHeader"></CardHeader>
+                <form className="loginForm" onSubmit={addBookHandler}>
+                    <FormGroup className={getFieldError('name') ? 'addBookInput' : ''}>
+                        <InputLabel htmlFor="login">{t("AddBook.BookName")}*</InputLabel>
                         <Input id="name"
                             type="text"
                             name="name"
-                            placeholder="Введите название книги"
-                            onChange={e => nameHandler(e)}
-                            value={book.name}
+                            placeholder={t("AddBook.BookNamePlaceholder")}
+                            onChange={changeName}
+                            value={state.name}
                             className="addBookInputName"
                             required />
                     </FormGroup>
                     <br />
-                    <FormGroup className={descrError ? 'addBookInput' : ''}>
-                        <InputLabel htmlFor="description">Описание*</InputLabel>
+                    <FormGroup className={getFieldError('description') ? 'addBookInput' : ''}>
+                        <InputLabel htmlFor="description">{t("AddBook.Description")}*</InputLabel>
                         <TextField className='createBookArea'
                             id="description"
-                            placeholder="Напишите описание книги"
-                            onChange={e => descriptionHandler(e)}
+                            placeholder={t("AddBook.DescriptionPlaceholder")}
+                            onChange={changeDescription}
                             name="description"
-                            value={book.description}
+                            value={state.description}
                             required
                             multiline
                             minRows={4}
@@ -113,11 +62,12 @@ export default function AddBookPage() {
                         />
                     </FormGroup>
                     <br />
-                    <label className="uploadLabel" htmlFor="uploadPicture">Добавить фото книги</label> {files && <span>{files[0].name}</span>}
-                    {filesError && <span style={{ color: 'red' }}>Проверьте формат файла</span>}
-                    <input type="file" name="photo" id="uploadPicture" accept=".jpg, .jpeg, .png" onChange={($event) => addPicture($event)} />
+                    <label className="uploadLabel" htmlFor="uploadPicture">{t("AddBook.AddPhoto")}</label>
+                    {state.picture && <span>{state.picture[0].name}</span>}
+                    {getFieldError('picture') && <span style={{ color: 'red' }}>{getFieldError('picture')}</span>}
+                    <input type="file" name="photo" id="uploadPicture" accept=".jpg, .jpeg, .png" onChange={changeFiles} />
                     <br />
-                    <Button color="primary" variant="contained" disabled={!formValid} onClick={addBookHandler}>Создать</Button>
+                    <Button color="primary" variant="contained" disabled={loading} type="submit">{t("AddBook.Add")}</Button>
                     <br />
                 </form>
             </Card>

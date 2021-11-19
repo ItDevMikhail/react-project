@@ -1,12 +1,12 @@
 import { useState, useCallback } from "react";
 import { useDispatch } from 'react-redux';
-import { errorMessage } from './../redux/actions/actionsFetch';
+import { errorMessage } from '../redux/actions/actionsFetch';
 
-export const useHttp = () => {
+export const useREST = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
-    const request = useCallback(async (url: string, method: string = 'GET', body = null, headers = { 'Content-Type': 'application/json', credentials: 'include' }) => {
+    const request = useCallback(async (url: string, method: string = 'GET', body = null, headers = { 'Content-Type': 'application/json', credentials: 'include' }): Promise<any> => {
         setLoading(true);
         try {
             const response = await fetch(url, { method, body, headers });
@@ -30,12 +30,16 @@ export const useHttp = () => {
             setLoading(false);
             return data;
 
-        } catch (e: any) {
-            setLoading(false);
-            dispatch(errorMessage(e.message));
-            setTimeout(() => dispatch(errorMessage('')), 2000);
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                setLoading(false);
+                dispatch(errorMessage(e.message));
+                setTimeout(() => dispatch(errorMessage('')), 2000);
+            } else {
+                return
+            }
         }
-    }, []);
+    }, [setLoading]);
 
     return { loading, request };
 }
